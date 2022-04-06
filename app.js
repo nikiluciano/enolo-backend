@@ -4,7 +4,7 @@ require("dotenv/config");
 
 const port = process.env.PORT
 
-app.get("/", (req, res) => {
+app.get("/welcome", (req, res) => {
     res.send("Welcome to enolo's backend");
 })
 
