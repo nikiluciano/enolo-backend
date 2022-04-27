@@ -6,11 +6,10 @@ require("dotenv/config");
 const port = process.env.PORT
 const dbUrl = process.env.DB_URL
 
-app.get("/", (req, res) => {
+app.get("/welcome", (req, res) => {
     res.send("Welcome to enolo's backend");
 })
 
-//Connect to DB
 mongoose.connect(
     dbUrl,
     { useNewUrlParser: true },
