@@ -10,6 +10,7 @@ app.get("/welcome", (req, res) => {
     res.send("Welcome to enolo's backend");
 })
 
+//DB connection
 mongoose.connect(
     dbUrl,
     { useNewUrlParser: true },
