@@ -17,5 +17,8 @@
   },
   "devDependencies": {
     "dotenv": "^16.0.0"
+  },
+  "engines": {
+    "node": "17.8.0"
   }
 }
