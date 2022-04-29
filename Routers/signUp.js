@@ -1,38 +1,37 @@
 const express = require('express');
 const router = express.Router();
-const userModel = require('../Models/userModel');
+const userModel = require('../Models/user');
+//const bcrypt = require ('bcrypt');
+//const nodemailer = require ('nodemailer');
+const searchAndInsert = require('../Controllers/signUp');
+
+/*let transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth:{
+        user:'ccc41709@gmail.com',
+        pass:' '
+    }
+});
+*/
 
 router.post("/signup",async(req,res)=>{
     await searchAndInsert(req,res);
+ /*   let mailOption = {
+        from: 'ccc41709@gmail.com',
+        to: req.body.email,
+        subject: "Registration confirmed",
+        text: "Your account is inserted in DB"
+        };
+        transporter.sendMail(mailOption,function(err,info){
+            if(err){
+                console.log("Impossible to send email");
+               //res.json("Impossible to send email"); come fare uscire questi messaggi dato che ci sono dei res.json prima
+            } else {
+                console.log("Email sent");
+                //res.json("Email sent");
+            }
+        });*/
 });
 
-async function searchAndInsert(req,res){
-    const newUser = new userModel({
-        username: req.body.username,
-        password: req.body.password,
-        email: req.body.email,
-        name: req.body.name,
-        surname: req.body.surname,
-        phone: req.body.phone,
-        address: req.body.address,
-        role: "USER"
-    });
 
-      const found = await userModel.findOne({username:req.body.username}).exec();
-      //TODO come far funzionare il middleware userSearch
-     if(found) {
-          res.json( "ERRORE DA DEFINIRE"+ res.statusCode + found.username + " Account Already Registered");
-
-
-      }else{
-        try {
-            const savedUser = await newUser.save();
-            res.json(savedUser);
-
-        } catch (err) {
-            console.log(err)
-            res.json({message: err});
-        }
-    }
-}
 module.exports = router;
