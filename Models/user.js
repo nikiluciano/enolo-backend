@@ -33,7 +33,12 @@ const user = mongoose.Schema({
       type:String,
       enum:["ADMIN","USER"],
       required:true
+    },
+    token:{
+        type:String,
+        required:true
     }
+
 })
 
 module.exports = mongoose.model("user",user);
