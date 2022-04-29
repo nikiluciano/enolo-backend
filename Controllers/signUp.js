@@ -19,7 +19,7 @@ module.exports = async function searchAndInsert(req,res){
     //TODO come far funzionare il middleware userSearch
     if(found) {
         res.status(409);
-        res.json("ERROR "+ res.statusCode + " " + found.username + "Account Already Registered" );
+        res.json({msg:"This account already exist"});
     } else {
         try {
             const savedUser = await newUser.save();
@@ -28,7 +28,7 @@ module.exports = async function searchAndInsert(req,res){
         } catch (err) {
             console.log(err)
             res.status(400);
-            res.json("Error "+ res.statusCode +" "+ {message: err});
+            res.json({msg: err});
         }
     }
 }
