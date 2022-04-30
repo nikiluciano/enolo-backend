@@ -31,7 +31,7 @@ const user = mongoose.Schema({
     },
     role:{
       type:String,
-      enum:["ADMIN","USER"],
+      enum:["ADMIN","WORKER"],
       required:true
     },
     token:{

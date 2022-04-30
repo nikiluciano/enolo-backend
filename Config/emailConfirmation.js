@@ -13,10 +13,10 @@ module.exports = function sendMailConfirmation(req,res,token) {
         to: req.body.email,
         subject: "Please confirm your account",
         html: `<h1>Email Confirmation</h1>
-        <h2>Hello ${name}</h2>
+        <h2>Hello ${req.body.username}</h2>
         <p>Thank you for subscribing. Please confirm your email by clicking on the following link</p>
         <a href=http://localhost:${process.env.PORT}/confirm/${token}> Click here</a>
-        </div>`,
+        </div>`
     };
     transporter.sendMail(mailOption, function (err, info) {
         if (err) {

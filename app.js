@@ -11,8 +11,6 @@ const dbUrl = process.env.DB_URL
 app.use(bodyParser.json());
 app.use(signUp);
 
-
-
 app.get("/welcome", (req, res) => {
     res.send("Welcome to enolo's backend");
 })

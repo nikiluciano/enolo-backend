@@ -1,14 +1,14 @@
 const bcrypt = require('bcrypt');
-const userModel = require('../Models/user');
+const user = require('../Models/user');
 const jwt = require("jsonwebtoken");
 const emailConfirmation = require ("../Config/emailConfirmation")
 
 //const nodemailer = require ('nodemailer');
 
-module.exports = async function searchAndInsert(req,res){
+module.exports = async function searchAndInsert(req,res,next){
     const encryptedPassword = await bcrypt.hash(req.body.password,10);
     const token = jwt.sign({username:req.body.username},process.env.SECRET,null,null);
-    const newUser = new userModel({
+    const newUser = new user({
         username: req.body.username,
         password: encryptedPassword,
         email: req.body.email,
@@ -16,20 +16,21 @@ module.exports = async function searchAndInsert(req,res){
         surname: req.body.surname,
         phone: req.body.phone,
         address: req.body.address,
-        role: "USER",
+        role: "WORKER",
         token: token
     });
 
-    const foundUsername = await userModel.findOne({username:req.body.username}).exec();
-    const foundEmail =  await userModel.findOne({email:req.body.email}).exec();
+    const foundUsername = await user.findOne({username:req.body.username}).exec();
+    const foundEmail =  await user.findOne({email:req.body.email}).exec();
     if(foundUsername) {
         res.status(409);
-        res.json("ERROR "+ res.statusCode + " " + found.username + "Already In Use" );
+        res.json("ERROR "+ res.statusCode + " " + foundUsername.username + "Already In Use" );
     } else if(foundEmail) {
         res.status(409);
-        res.json("ERROR "+ res.statusCode + " " + found.email + "Already In Use" );
-    }
-    else {
+        res.json("ERROR "+ res.statusCode + " " + foundEmail.email + "Already In Use" );
+        //res.json({msg:"This account already exist"});
+    } else {
+
         try {
             const savedUser = await newUser.save();
             res.json(savedUser);
@@ -37,9 +38,12 @@ module.exports = async function searchAndInsert(req,res){
         } catch (err) {
             console.log(err)
             res.status(400);
-            res.json("Error "+ res.statusCode +" "+ {message: err});
+            res.json({msg: err});
         }
     }
+    next();
+    console.log("tokennnn:"+token);
+    exports.token = token ;
 }
 
 
