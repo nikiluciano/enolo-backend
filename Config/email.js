@@ -15,7 +15,7 @@ module.exports = function sendMailConfirmation(req,res,token) {
         html: `<h1>Email Confirmation</h1>
         <h2>Hello ${req.body.username}</h2>
         <p>Thank you for subscribing. Please confirm your email by clicking on the following link</p>
-        <a href=http://localhost:${process.env.PORT}/confirm/${token}> Click here</a>
+        <a href=http://localhost:${process.env.PORT}/confirmation/${token}> Click here</a>
         </div>`
     };
     transporter.sendMail(mailOption, function (err, info) {
