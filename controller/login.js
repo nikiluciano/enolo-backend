@@ -1,7 +1,6 @@
 const jwt = require("jsonwebtoken");
 const express = require("express");
-const bcrypt = require("bcrypt")
-const loginReq = require("../models/loginReq");
+const bcrypt = require("bcryptjs");
 const loginRes = require("../models/loginRes");
 const User = require("../models/user");
 const app = express();
@@ -12,17 +11,16 @@ app.post("/login", async (req, res) => {
         const username = req.body.username;
         const password = req.body.password;
 
-
         // Validate user input
         if (!(username && password)) {
             res.status(400).json({msg: "invalid Input"});
         }
         // Validate if user exist in our database
-        const user = await User.findOne({username:username, password:password}).exec();
-        if (user ) {
+        const user = await User.findOne({username:username}).exec();
+        if (user  && (await bcrypt.compare(password, user.password))) {
             // Create token
                     const token = jwt.sign(
-                { username: req.body.username},
+                { username: username},
                 process.env.TOKEN_KEY,
                 {
                     expiresIn: "12h",
