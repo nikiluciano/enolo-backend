@@ -1,9 +1,15 @@
 const bcrypt = require("bcrypt");
-const userModel = require("../Models/user");
+const userModel = require("../models/user");
 
-module.exports = async function searchAndInsert(req,res){
-    const plainTextPassword = req.body.password;
-    const encryptedPassword = await bcrypt.hash(plainTextPassword,10);
+module.exports = async function registerUser(req,res) {
+    const password = req.body.password;
+
+    if(password === ""){
+        res.status(404).json( {msg:"Password field should not be empty"} );
+        return
+    }
+
+    const encryptedPassword = await bcrypt.hash(password,10);
     const newUser = new userModel({
         username: req.body.username,
         password: encryptedPassword,
@@ -12,13 +18,13 @@ module.exports = async function searchAndInsert(req,res){
         surname: req.body.surname,
         phone: req.body.phone,
         address: req.body.address,
-        role: "USER"
+        role: "WORKER"
     });
 
     const found = await userModel.findOne({username:req.body.username}).exec();
     if(found) {
         res.status(409);
-        res.json({msg:"This account already exists"});
+        res.json( {msg:"This account already exists"} );
     } else {
         try {
             const savedUser = await newUser.save();
@@ -26,7 +32,7 @@ module.exports = async function searchAndInsert(req,res){
         } catch (err) {
             console.log(err)
             res.status(400);
-            res.json({msg: err});
+            res.json( {msg: err} );
         }
     }
 }
