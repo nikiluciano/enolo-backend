@@ -2,8 +2,8 @@ const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require('body-parser');
 const app = express();
-const auth = require("./middleware/auth")
-const login = require("./controller/login")
+const auth = require("./middlewares/auth")
+const login = require("./controllers/login")
 
 require("dotenv/config");
 
