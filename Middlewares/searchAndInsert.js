@@ -2,8 +2,8 @@ const bcrypt = require("bcrypt");
 const userModel = require("../Models/user");
 
 module.exports = async function searchAndInsert(req,res){
-    const encryptedPassword = await bcrypt.hash(req.body.password,10);
-
+    const plainTextPassword = req.body.password;
+    const encryptedPassword = await bcrypt.hash(plainTextPassword,10);
     const newUser = new userModel({
         username: req.body.username,
         password: encryptedPassword,
@@ -16,15 +16,13 @@ module.exports = async function searchAndInsert(req,res){
     });
 
     const found = await userModel.findOne({username:req.body.username}).exec();
-    //TODO come far funzionare il middleware userSearch
     if(found) {
         res.status(409);
-        res.json({msg:"This account already exist"});
+        res.json({msg:"This account already exists"});
     } else {
         try {
             const savedUser = await newUser.save();
             res.json(savedUser);
-            //Scrivi codice email
         } catch (err) {
             console.log(err)
             res.status(400);
