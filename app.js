@@ -1,6 +1,6 @@
 const express = require('express');
 const mongoose = require('mongoose')
-const signUp = require ('./Routers/signUp');
+const signUp = require ('./routers/signUp');
 const bodyParser = require('body-parser');
 const app = express();
 require('dotenv/config');

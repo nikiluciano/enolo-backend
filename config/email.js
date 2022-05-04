@@ -8,14 +8,16 @@ module.exports = function sendMailConfirmation(req,res,token) {
             pass: process.env.MY_PASSWORD
         }
     });
+    const usernameReq = req.body.username;
+    const mailRecipient = req.body.email;
     let mailOption = {
         from: 'ccc41709@gmail.com',
-        to: req.body.email,
+        to: mailRecipient,
         subject: "Please confirm your account",
         html: `<h1>Email Confirmation</h1>
-        <h2>Hello ${req.body.username}</h2>
+        <h2>Hello ${usernameReq}</h2>
         <p>Thank you for subscribing. Please confirm your email by clicking on the following link</p>
-        <a href=http://localhost:${process.env.PORT}/confirmation/${token}> Click here</a>
+        <a href=http://localhost:${process.env.PORT}/confirmation/${usernameReq}/${token}> Click here</a>
         </div>`
     };
     transporter.sendMail(mailOption, function (err, info) {

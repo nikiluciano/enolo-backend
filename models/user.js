@@ -34,10 +34,6 @@ const user = mongoose.Schema({
       enum:["ADMIN","WORKER"],
       required:true
     },
-    token:{
-        type:String,
-        required:true
-    },
     status:{
         type:String,
         enum:["PENDING","ACTIVE"],
