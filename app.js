@@ -4,6 +4,7 @@ const bodyParser = require('body-parser');
 const auth = require("./middlewares/auth")
 const login = require("./controllers/login")
 const signUp = require('./routes/signUp');
+const supplierRoute = require("./routes/supplierRoute");
 const app = express();
 
 require("dotenv/config");
@@ -14,6 +15,7 @@ const dbUrl = process.env.DB_URL
 app.use(bodyParser.json());
 app.use(login);
 app.use(signUp);
+app.use(supplierRoute);
 
 app.get("/welcome", auth,  (req, res) => {
     res.send("Welcome to enolo's backend");

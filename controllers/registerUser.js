@@ -29,14 +29,15 @@ module.exports = async function registerUser(req,res) {
         role: roleReq
     });
 
-    const found = await userModel.findOne({username:req.body.username}).exec();
+    const found = await userModel.findOne({username:usernameReq}).exec();
     if(found) {
         res.status(409);
         res.json( {msg:"This account already exists"} );
     } else {
         try {
             const savedUser = await newUser.save();
-            res.json(savedUser);
+            res.status(200);
+            res.json("Account inserted");
         } catch (err) {
             console.log(err)
             res.status(400);
