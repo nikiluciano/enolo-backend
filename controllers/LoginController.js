@@ -1,15 +1,13 @@
 const jwt = require("jsonwebtoken");
-const express = require("express");
 const bcrypt = require("bcryptjs");
 const User = require("../models/user");
-const app = express();
 
-app.post("/login", async (req, res) => {
-    try {
+module.exports = async function login(req, res) {
         // Get user input req
         const username = req.body.username;
         const password = req.body.password;
 
+    try {
         // Validate user input
         if (!(username && password)) {
             res.status(400).json( {msg: "Email and password should not be empty"} );
@@ -36,6 +34,4 @@ app.post("/login", async (req, res) => {
     } catch (err) {
         console.log(err);
     }
-});
-
-module.exports = app;
+}
