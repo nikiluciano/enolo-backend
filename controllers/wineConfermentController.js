@@ -1,5 +1,5 @@
 const wineConfermentModel = require("../models/wineConferment");
-
+//Assign value to models fields
 async function valueAssignement(req, res){
     try{
         req.status = req.body.status
@@ -9,17 +9,25 @@ async function valueAssignement(req, res){
         req.typology = req.body.typology
         req.origin = req.body.origin
         req._idworker = req.body._idworker
-        console.log(req.country);
     }catch (e){
-        console.log(e);
         res.status(500).send("Server error");
     }
 }
-
+//Post method
 exports.postWineConferment = [
     async function postWineConferment(req, res){
         await valueAssignement(req, res)
-        const found = await wineConfermentModel.findOne({}).exec();
+        //Define date to insert it automatically into db
+        let dateNowObj = new Date();
+        let date = ("0" + dateNowObj.getDate()).slice(-2);
+        let month = ("0" + (dateNowObj.getMonth() + 1)).slice(-2);
+        let year = dateNowObj.getFullYear();
+        let hours = dateNowObj.getHours();
+        let minutes = dateNowObj.getMinutes();
+        let seconds = dateNowObj.getSeconds();
+        //format GG/MM/AA - HH/MM/SS
+        dateNowObj = (date + "/" + month + "/" + year + " " + hours + ":" + minutes + ":" + seconds);
+
         const newWineConferment = new wineConfermentModel({
             status: req.status,
             country: req.country,
@@ -27,13 +35,9 @@ exports.postWineConferment = [
             description: req.description,
             typology: req.typology,
             origin: req.origin,
+            date: dateNowObj,
             _idworker: req._idworker
         });
-
-        if(found){
-            res.status(409).json({msg: "wine conferment already exist"});
-        } else {
-            console.log(newWineConferment)
             try {
                 await newWineConferment.save();
                 res.status(200);
@@ -43,7 +47,6 @@ exports.postWineConferment = [
                 res.status(400);
                 res.json( {msg:err.toString()} );
             }
-        }
 }];
 
 exports.getOneWineConferment = [

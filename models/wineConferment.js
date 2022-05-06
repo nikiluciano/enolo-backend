@@ -26,6 +26,10 @@ const wineConferment = mongoose.Schema({
         type: String,
         required: true
     },
+    date: {
+        type: String,
+        required: true
+    },
     _idworker: {
         type: String,
         required: true
