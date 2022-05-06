@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 
 const wineConferment = mongoose.Schema({
     status: {
@@ -26,16 +26,10 @@ const wineConferment = mongoose.Schema({
         type: String,
         required: true
     },
-    date: {
-        type: String,
-        required: true
-    },
     _idworker: {
         type: String,
         required: true
     }
-
-
 })
 
-module.exports = mongoose.model("wineconferments",wineConferment);
+module.exports = mongoose.model("wine_conferment", wineConferment);

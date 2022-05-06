@@ -3,7 +3,7 @@ const router = express.Router();
 const wineConfermentController = require("../controllers/wineConfermentController");
 
 router.get("/wineConferment/:_id",wineConfermentController.getOneWineConferment);
-router.post("/wineConferment/", wineConfermentController.postWineConferment);
+router.post("/wineConferment", wineConfermentController.postWineConferment);
 module.exports = router;
 
 

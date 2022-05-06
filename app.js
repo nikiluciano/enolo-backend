@@ -13,9 +13,11 @@ const port = process.env.PORT
 const dbUrl = process.env.DB_URL
 
 app.use(bodyParser.json());
+
 app.use(login);
 app.use(signUp);
 app.use(wineConfermentRouter);
+
 app.get("/welcome", auth,  (req, res) => {
     res.send("Welcome to enolo's backend");
 });
