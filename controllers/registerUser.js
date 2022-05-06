@@ -4,12 +4,14 @@ const userModel = require("../models/user");
 module.exports = async function registerUser(req,res) {
     //fun replace removes all white spaces
     const passwordReq = req.body.password;
-    const usernameReq = req.body.username.replace(/ /g, '');
-    const emailReq = req.body.email.replace(/ /g, '');
-    const nameReq = req.body.name.replace(/ /g, '');
-    const surnameReq = req.body.surname.replace(/ /g, '');
-    const phoneReq = req.body.phone.replace(/ /g, '');
-    const addressReq = req.body.address.replace(/ /g, '');
+
+    const usernameReq = req.body.username
+    const emailReq = req.body.email
+    const nameReq = req.body.name
+    const surnameReq = req.body.surname
+    const phoneReq = req.body.phone
+    const addressReq = req.body.address
+
     const roleReq = "WORKER"
 
     if(passwordReq === ""){
