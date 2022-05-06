@@ -1,7 +1,8 @@
 const wineConfermentModel = require("../models/wineConferment");
+
 //Assign value to models fields
-async function valueAssignement(req, res){
-    try{
+async function valueAssignement(req, res) {
+    try {
         req.status = req.body.status
         req.country = req.body.country
         req.supplier = req.body.supplier
@@ -9,13 +10,14 @@ async function valueAssignement(req, res){
         req.typology = req.body.typology
         req.origin = req.body.origin
         req._idworker = req.body._idworker
-    }catch (e){
+    } catch (e) {
         res.status(500).send("Server error");
     }
 }
+
 //Post method
 exports.postWineConferment = [
-    async function postWineConferment(req, res){
+    async function postWineConferment(req, res) {
         await valueAssignement(req, res)
         //Define date to insert it automatically into db
         let dateNowObj = new Date();
@@ -38,28 +40,26 @@ exports.postWineConferment = [
             date: dateNowObj,
             _idworker: req._idworker
         });
-            try {
-                await newWineConferment.save();
-                res.status(200);
-                res.json( {msg:"Wine Conferment inserted"} );
-            } catch (err) {
-                console.log(newWineConferment)
-                res.status(400);
-                res.json( {msg:err.toString()} );
-            }
-}];
+        try {
+            await newWineConferment.save();
+            res.status(200);
+            res.json({msg: "Wine Conferment inserted"});
+        } catch (err) {
+            console.log(newWineConferment)
+            res.status(400);
+            res.json({msg: err.toString()});
+        }
+    }];
 
 exports.getOneWineConferment = [
-    async function getOneSuppliers(req,res){
+    async function getOneSuppliers(req, res) {
         const _idReq = req.params.id;
-        console.log(_idReq);
-        const found = await wineConfermentModel.findOne({id:_idReq}).exec();
+        const found = await wineConfermentModel.findOne({id: _idReq}).exec();
         if (!found) {
             res.status(400);
-            console.log(found);
-            res.json( {msg:"Couldn't get wine conferment"} );
+            res.json({msg: "Couldn't get wine conferment"});
         } else {
             res.status(200);
             res.json(found);
         }
-}];
+    }];
