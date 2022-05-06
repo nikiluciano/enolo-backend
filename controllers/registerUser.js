@@ -13,7 +13,7 @@ module.exports = async function registerUser(req,res) {
     const roleReq = "WORKER"
 
     if(passwordReq === ""){
-        res.status(404).json( {msg:"Password field should not be empty"} );
+        res.status(400).json( {msg:"Password field should not be empty"} );
         return
     }
 
