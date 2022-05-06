@@ -1,0 +1,26 @@
+POST {{api-url}}/supplier
+Content-Type: application/json
+x-access-token: {{access-token}}
+
+{
+  "username":"username",
+  "name":"user",
+  "surname":"name",
+  "phone":"826196",
+  "email":"username@gmail.com",
+  "address":"vianiente",
+  "company":"company5"
+}
+
+### GET ALL
+GET {{api-url}}/suppliers
+Accept: text/json
+x-access-token: {{access-token}}
+
+### GET ONE
+GET {{api-url}}/suppliers/:6272c1db7d8c2c288bfcef89
+Accept: text/json
+x-access-token: {{access-token}}
+
+
+

@@ -1,25 +1,19 @@
-const supplier = require("../models/supplier");
+const supplier = require ("../models/supplier");
 
+//POST
 exports.insertSupplier = [
     async function insertSupplier(req, res) {
-        const usernameReq = req.body.username.replace(/ /g, '');
-        const nameReq = req.body.name.replace(/ /g, '');
-        const surnameReq = req.body.surname.replace(/ /g, '');
-        const phoneReq = req.body.phone.replace(/ /g, '');
-        const emailReq = req.body.email.replace(/ /g, '');
-        const addressReq = req.body.address.replace(/ /g, '');
-        const companyReq = req.body.company.replace(/ /g, '');
-
+        await valueAssignment(req,res);
         const newSupplier = new supplier({
-            username: usernameReq,
-            name: nameReq,
-            surname: surnameReq,
-            phone: phoneReq,
-            email: emailReq,
-            address: addressReq,
-            company: companyReq
+            username: req.usernameReq,
+            name: req.nameReq,
+            surname: req.surnameReq,
+            phone: req.phoneReq,
+            email: req.emailReq,
+            address: req.addressReq,
+            company: req.companyReq
         });
-        const found = await supplier.findOne({username: usernameReq}).exec();
+        const found = await supplier.findOne({username: req.usernameReq}).exec();
         if (found) {
             res.status(409);
             res.json({msg: "This supplier already exists"});
@@ -29,13 +23,28 @@ exports.insertSupplier = [
                 res.status(200);
                 res.json("Account inserted");
             } catch (err) {
-                console.log(err)
-                res.status(400);
-                res.json({msg: err});
+                res.status(400).json({msg: "Server error"});
             }
         }
     }];
 
+//PATCH
+exports.updateSupplier =[
+    async function updateSupplier (req,res) {
+        const idReq = req.params.id;
+        console.log(idReq);
+        const usernameReq = req.body.username;
+        const found = await supplier.findOne({username: usernameReq}).exec();
+        if(usernameReq === null){
+            res.status(404).send("Username field should not be empty");
+        } else if (found){
+            res.status(409).json({msg: "This supplier already exists"});
+        }
+        await supplier.findByIdAndUpdate(idReq, req.body,{new:true});
+        res.status(200).json("Supplier updated successfully");
+}];
+
+//GET ALL
 exports.getAllSuppliers = [
     async function getAllSuppliers(req,res){
         try {
@@ -50,11 +59,12 @@ exports.getAllSuppliers = [
     }
 ];
 
+//GET ONE
 exports.getOneSupplier = [
     async function getOneSuppliers(req,res){
-        const usernameReq = req.params.username;
-        console.log(usernameReq);
-        const found = await supplier.findOne({username:usernameReq}).exec();
+        const idReq = req.params.id;
+        console.log(idReq);
+        const found = await supplier.findOne({id:idReq}).exec();
         if (!found) {
             res.status(400);
             res.json("Couldn't get the supplier");
@@ -63,3 +73,18 @@ exports.getOneSupplier = [
             res.json(found);
         }
     }];
+
+async function valueAssignment(req, res){
+    try{
+        req.usernameReq = req.body.username.replace(/ /g, '');
+        req.nameReq = req.body.name.replace(/ /g, '');
+        req.surnameReq = req.body.surname.replace(/ /g, '');
+        req.phoneReq = req.body.phone.replace(/ /g, '');
+        req.emailReq = req.body.email.replace(/ /g, '');
+        req.addressReq = req.body.address.replace(/ /g, '');
+        req.companyReq = req.body.company.replace(/ /g, '');
+    }catch(e) {
+        console.log(e);
+        res.status(500).send("Server error");
+    }
+}
