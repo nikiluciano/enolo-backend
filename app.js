@@ -1,10 +1,10 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require('body-parser');
-const auth = require("./middlewares/auth")
-const login = require("./controllers/login")
-const signUp = require('./routes/signUp');
-const wineConfermentRouter = require("./routes/wineConfermentRouter")
+const auth = require("./middlewares/Auth")
+const login = require("./controllers/Login")
+const signUp = require('./routes/SignUp');
+const wineConfermentRouter = require("./routes/WineConfermentRouter")
 const app = express();
 
 require("dotenv/config");

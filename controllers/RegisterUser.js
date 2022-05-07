@@ -1,5 +1,5 @@
 const bcrypt = require("bcrypt");
-const userModel = require("../models/user");
+const userModel = require("../models/User");
 
 module.exports = async function registerUser(req,res) {
     //fun replace removes all white spaces
