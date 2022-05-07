@@ -1,9 +1,10 @@
-const supplier = require ("../models/supplier");
+const supplier = require ("../models/Supplier");
 
 //POST
-exports.insertSupplier = [
+exports.insertSupplier =
     async function insertSupplier(req, res) {
         await valueAssignment(req,res);
+
         const newSupplier = new supplier({
             username: req.usernameReq,
             name: req.nameReq,
@@ -23,13 +24,13 @@ exports.insertSupplier = [
                 res.status(200);
                 res.json("Account inserted");
             } catch (err) {
-                res.status(400).json({msg: "Server error"});
+                res.status(500).json({msg: "Server error"});
             }
         }
-    }];
+    }
 
 //PATCH
-exports.updateSupplier =[
+exports.updateSupplier =
     async function updateSupplier (req,res) {
         const idReq = req.params.id;
         console.log(idReq);
@@ -42,10 +43,10 @@ exports.updateSupplier =[
         }
         await supplier.findByIdAndUpdate(idReq, req.body,{new:true});
         res.status(200).json("Supplier updated successfully");
-}];
+        }
 
 //GET ALL
-exports.getAllSuppliers = [
+exports.getAllSuppliers =
     async function getAllSuppliers(req,res){
         try {
             res.status(200); /** credo sia inutile scriverlo ogni volta)*/
@@ -57,10 +58,10 @@ exports.getAllSuppliers = [
             res.json({ message:"Couldn't get all suppliers" });
         }
     }
-];
+
 
 //GET ONE
-exports.getOneSupplier = [
+exports.getOneSupplier =
     async function getOneSuppliers(req,res){
         const idReq = req.params.id;
         console.log(idReq);
@@ -72,7 +73,7 @@ exports.getOneSupplier = [
             res.status(200);
             res.json(found);
         }
-    }];
+    }
 
 async function valueAssignment(req, res){
     try{
