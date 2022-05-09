@@ -1,8 +1,0 @@
-### POST
-POST {{api-url}}/signup
-Content-Type: application/json
-x-access-token: {{access-token}}
-
-{
-
-}
