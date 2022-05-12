@@ -3,7 +3,9 @@ const jwt = require("jsonwebtoken");
 const config = process.env;
 
 const verifyToken = (req, res, next) => {
-    const token = req.body.token || req.query.token || req.headers["x-access-token"];
+    let token = req.body.token || req.query.token || req.headers["x-access-token"] || req.headers["authorization"];
+
+    token = token.replace("Bearer ", "");
 
     if (!token) {
         return res.status(403).send( {msg: "Unauthorized: token required for authentication"} );

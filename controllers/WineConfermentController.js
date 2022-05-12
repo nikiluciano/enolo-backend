@@ -78,6 +78,7 @@ exports.postWineConferment = [
             res.json({msg: err.toString()});
         }
 }];
+
 // Get one conferment method
 exports.getOneWineConferment = [
     async function getOneSuppliers(req, res) {
@@ -96,6 +97,7 @@ exports.getOneWineConferment = [
             res.json({msg: "Incorrect id"});
         }
     }];
+
 //patch method updating conferment by id
 exports.updateWineConferment =[
     async function updateWineConferment (req,res) {
@@ -105,24 +107,23 @@ exports.updateWineConferment =[
 
         if(!found){
             res.status(400).json({msg: "There is no wine conferment with this id"});
-        }else{
-            await wineConfermentModel.findByIdAndUpdate(req.params.id, req.body,{new:true});
+        } else {
+            await wineConfermentModel.findByIdAndUpdate(req.params.id, req.body, {new:true});
             res.status(200).json({msg: "wine conferment updated successfully"});
         }
     }catch (err) {
-        res.json({msg: "incorrect id"})
+        res.json({msg: "incorrect id"});
     }
 }];
-
-
 
 //get all conferment method
 exports.getAllWineConferment = [
     async function getAllWineConferment(req, res){
         try{
             const wineConferment = await wineConfermentModel.find();
+
             res.status(200);
-            res.json({wineConferment});
+            res.json(wineConferment);
         }catch (err){
             res.status(400);
             res.json({msg: "Couldn't get all wine conferment"});

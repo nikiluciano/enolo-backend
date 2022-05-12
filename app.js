@@ -1,10 +1,13 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require('body-parser');
-const auth = require("./middlewares/Auth")
-const login = require("./controllers/Login")
+const auth = require("./middlewares/Auth");
+
+const login = require("./controllers/Login");
 const signUp = require('./routes/SignUp');
-const wineConfermentRouter = require("./routes/WineConfermentRouter")
+const wineConfermentRoute = require("./routes/WineConfermentRoute");
+const warehouseRoute = require("./routes/WarehouseRoute");
+
 const app = express();
 
 require("dotenv/config");
@@ -16,7 +19,8 @@ app.use(bodyParser.json());
 
 app.use(login);
 app.use(signUp);
-app.use(wineConfermentRouter);
+app.use(wineConfermentRoute);
+app.use("/warehouse", warehouseRoute);
 
 app.get("/welcome", auth,  (req, res) => {
     res.send("Welcome to enolo's backend");

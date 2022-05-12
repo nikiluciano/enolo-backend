@@ -3,7 +3,6 @@ const router = express.Router();
 const auth = require("../middlewares/Auth")
 const wineConfermentController = require("../controllers/WineConfermentController");
 
-
 router.get("/wineConferment/:id",auth,  wineConfermentController.getOneWineConferment);
 router.patch("/wineConferment/:id",auth, wineConfermentController.updateWineConferment);
 router.get("/wineConferment",auth, wineConfermentController.getAllWineConferment);
