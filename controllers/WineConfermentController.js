@@ -1,4 +1,5 @@
 const wineConfermentModel = require("../models/WineConferment");
+const warehouseModel = require("../models/Warehouse");
 
 //Assign value to models fields
 async function valueAssignement(req, res, date) {
@@ -90,16 +91,16 @@ exports.getOneWineConferment = [
                 res.status(400).json({msg: "There is no wine conferment with this id"});
             } else {
                 res.status(200);
-                res.json({msg: "successfully get the conferment"});
-                res.json(found);
+                res.send(found);
             }
         } catch (err) {
             res.json({msg: "Incorrect id"});
         }
     }];
 
+/*
 //patch method updating conferment by id
-exports.updateWineConferment =[
+exports.updateWineConferment = [
     async function updateWineConferment (req,res) {
     try{
         const _idReq = req.params.id;
@@ -115,6 +116,7 @@ exports.updateWineConferment =[
         res.json({msg: "incorrect id"});
     }
 }];
+ */
 
 //get all conferment method
 exports.getAllWineConferment = [
@@ -129,6 +131,7 @@ exports.getAllWineConferment = [
             res.json({msg: "Couldn't get all wine conferment"});
         }
 }];
+
 //delete conferment method
 exports.deleteWineConferment = [
     async function (req, res){
@@ -143,3 +146,78 @@ exports.deleteWineConferment = [
 
 }];
 
+/** PATCH processes */
+exports.updateConfermentProcess = [
+    async function confermentProcess (req,res) {
+        try{
+            const _idReq = req.params.id;
+            const found = await wineConfermentModel.findById(_idReq);
+
+            if(!found){
+                res.status(400).json({msg: "There is no wine conferment with this id"});
+            } else {
+
+                found.conferment_process = {
+                    quantity: req.body.quantity,
+                    description: req.body.description
+                }
+
+                await wineConfermentModel.findByIdAndUpdate(req.params.id, found, {new:true});
+
+                res.status(200).json({msg: "Conferment process updated successfully"});
+            }
+        } catch (err) {
+            res.json({msg: "Incorrect id"});
+        }
+    }
+];
+
+exports.updateBottlingProcess = [
+    async function updateBottlingProcess (req,res) {
+        try{
+            const _idReq = req.params.id;
+            const found = await wineConfermentModel.findById(_idReq);
+            const warehouse = await warehouseModel.findOne()
+
+            if(!found){
+                res.status(400).json({msg: "There is no wine conferment with this id"});
+            } else {
+
+                const bottlesAvailability = await checkWarehouseQuantitiesAvailability(warehouse.bottles_quantity, req.body.bottles_quantity)
+                const capsAvailability = await checkWarehouseQuantitiesAvailability(warehouse.caps_quantity, req.body.caps_quantity)
+                const tagsAvailability = await checkWarehouseQuantitiesAvailability(warehouse.tags_quantity, req.body.tags_quantity)
+
+                console.log(bottlesAvailability)
+                console.log(capsAvailability)
+                console.log(tagsAvailability)
+
+                if(bottlesAvailability && capsAvailability && tagsAvailability){
+                    found.bottling_process = {
+                        bottles_quantity: req.body.bottles_quantity,
+                        caps_quantity: req.body.caps_quantity,
+                        tags_quantity: req.body.tags_quantity
+                    }
+
+                    await wineConfermentModel.findByIdAndUpdate(req.params.id, found, {new:true});
+
+                    await warehouseModel.update(
+                        { $set: {
+                                bottles_quantity: (warehouse.bottles_quantity - req.body.bottles_quantity),
+                                caps_quantity: (warehouse.caps_quantity - req.body.caps_quantity),
+                                tags_quantity: (warehouse.tags_quantity - req.body.tags_quantity) }
+                        });
+
+                    res.status(200).json({msg: "Bottling process updated successfully"});
+                } else {
+                    res.status(400).json({msg: "Not enough quantity of bottles, caps and tags"});
+                }
+            }
+        } catch (err) {
+            res.json({msg: "Incorrect id"});
+        }
+    }
+];
+
+async function checkWarehouseQuantitiesAvailability(available, request) {
+    return (available - request) >= 0;
+}
