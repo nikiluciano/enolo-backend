@@ -172,6 +172,128 @@ exports.updateConfermentProcess = [
     }
 ];
 
+exports.updateWinePressingProcess = [
+    async function winePressingProcess (req,res) {
+        try{
+            const _idReq = req.params.id;
+            const found = await wineConfermentModel.findById(_idReq);
+
+            if(!found){
+                res.status(400).json({msg: "There is no wine conferment with this id"});
+            } else {
+
+                found.wine_pressing_process = {
+                    description: req.body.description
+                }
+
+                await wineConfermentModel.findByIdAndUpdate(req.params.id, found, {new:true});
+
+                res.status(200).json({msg: "Conferment process updated successfully"});
+            }
+        } catch (err) {
+            res.json({msg: "Incorrect id"});
+        }
+    }
+];
+
+exports.updateDestemmingProcess = [
+    async function destemmingProcess (req,res) {
+        try{
+            const _idReq = req.params.id;
+            const found = await wineConfermentModel.findById(_idReq);
+
+            if(!found){
+                res.status(400).json({msg: "There is no wine conferment with this id"});
+            } else {
+
+                found.destemming_process = {
+                    waste: req.body.waste,
+                    description: req.body.description
+                }
+
+                await wineConfermentModel.findByIdAndUpdate(req.params.id, found, {new:true});
+
+                res.status(200).json({msg: "Destemming process updated successfully"});
+            }
+        } catch (err) {
+            res.json({msg: "Incorrect id"});
+        }
+    }
+];
+
+exports.updateWinemakingProcess = [
+    async function winemakingProcess (req,res) {
+        try{
+            const _idReq = req.params.id;
+            const found = await wineConfermentModel.findById(_idReq);
+
+            if(!found){
+                res.status(400).json({msg: "There is no wine conferment with this id"});
+            } else {
+
+                found.winemaking_process = {
+                    waste: req.body.waste,
+                    description: req.body.description
+                }
+
+                await wineConfermentModel.findByIdAndUpdate(req.params.id, found, {new:true});
+
+                res.status(200).json({msg: "Winemaking process updated successfully"});
+            }
+        } catch (err) {
+            res.json({msg: "Incorrect id"});
+        }
+    }
+];
+
+exports.updateRackingProcess = [
+    async function rackingProcess (req,res) {
+        try{
+            const _idReq = req.params.id;
+            const found = await wineConfermentModel.findById(_idReq);
+
+            if(!found){
+                res.status(400).json({msg: "There is no wine conferment with this id"});
+            } else {
+
+                found.racking_process = {
+                    description: req.body.description
+                }
+
+                await wineConfermentModel.findByIdAndUpdate(req.params.id, found, {new:true});
+
+                res.status(200).json({msg: "Racking process updated successfully"});
+            }
+        } catch (err) {
+            res.json({msg: "Incorrect id"});
+        }
+    }
+];
+
+exports.updateRefinementProcess = [
+    async function refinementProcess (req,res) {
+        try{
+            const _idReq = req.params.id;
+            const found = await wineConfermentModel.findById(_idReq);
+
+            if(!found){
+                res.status(400).json({msg: "There is no wine conferment with this id"});
+            } else {
+
+                found.refinement_process = {
+                    description: req.body.description
+                }
+
+                await wineConfermentModel.findByIdAndUpdate(req.params.id, found, {new:true});
+
+                res.status(200).json({msg: "Refinement process updated successfully"});
+            }
+        } catch (err) {
+            res.json({msg: "Incorrect id"});
+        }
+    }
+];
+
 exports.updateBottlingProcess = [
     async function updateBottlingProcess (req,res) {
         try{
