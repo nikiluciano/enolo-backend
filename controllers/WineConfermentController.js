@@ -155,6 +155,7 @@ exports.updateConfermentProcess = [
             if(!found){
                 res.status(400).json({msg: "There is no wine conferment with this id"});
             } else {
+                found.status = "PENDING"
 
                 found.conferment_process = {
                     quantity: req.body.quantity,
@@ -180,6 +181,7 @@ exports.updateWinePressingProcess = [
             if(!found){
                 res.status(400).json({msg: "There is no wine conferment with this id"});
             } else {
+                found.status = "PENDING"
 
                 found.wine_pressing_process = {
                     description: req.body.description
@@ -204,6 +206,8 @@ exports.updateDestemmingProcess = [
             if(!found){
                 res.status(400).json({msg: "There is no wine conferment with this id"});
             } else {
+                found.status = "PENDING"
+
                 found.destemming_process = {
                     waste: req.body.waste,
                     description: req.body.description
@@ -228,6 +232,7 @@ exports.updateWinemakingProcess = [
             if(!found){
                 res.status(400).json({msg: "There is no wine conferment with this id"});
             } else {
+                found.status = "PENDING"
 
                 found.winemaking_process = {
                     waste: req.body.waste,
@@ -253,6 +258,7 @@ exports.updateRackingProcess = [
             if(!found){
                 res.status(400).json({msg: "There is no wine conferment with this id"});
             } else {
+                found.status = "PENDING"
 
                 found.racking_process = {
                     description: req.body.description
@@ -277,6 +283,7 @@ exports.updateRefinementProcess = [
             if(!found){
                 res.status(400).json({msg: "There is no wine conferment with this id"});
             } else {
+                found.status = "PENDING"
 
                 found.refinement_process = {
                     description: req.body.description
@@ -307,11 +314,9 @@ exports.updateBottlingProcess = [
                 const capsAvailability = await checkWarehouseQuantitiesAvailability(warehouse.caps_quantity, req.body.caps_quantity)
                 const tagsAvailability = await checkWarehouseQuantitiesAvailability(warehouse.tags_quantity, req.body.tags_quantity)
 
-                console.log(bottlesAvailability)
-                console.log(capsAvailability)
-                console.log(tagsAvailability)
-
                 if(bottlesAvailability && capsAvailability && tagsAvailability){
+                    found.status = "READY"
+
                     found.bottling_process = {
                         bottles_quantity: req.body.bottles_quantity,
                         caps_quantity: req.body.caps_quantity,
