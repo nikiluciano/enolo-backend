@@ -1,9 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const registerUser = require('../controllers/RegisterUser');
+const registerUser = require('../controllers/SignUpController');
 
-router.post("/signup", async(req,res) => {
-    await registerUser(req,res);
-});
+router.post("/signup", registerUser.signup);
 
 module.exports = router;

@@ -2,8 +2,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require('body-parser');
 const auth = require("./middlewares/Auth");
-
-const login = require("./controllers/Login");
+const login = require("./routes/Login");
 const signUp = require('./routes/SignUp');
 const wineConfermentRoute = require("./routes/WineConfermentRoute");
 const warehouseRoute = require("./routes/WarehouseRoute");
