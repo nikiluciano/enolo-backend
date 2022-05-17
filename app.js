@@ -1,6 +1,8 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require('body-parser');
+const cors = require("cors");
+
 const auth = require("./middlewares/Auth");
 const login = require("./routes/Login");
 const signUp = require('./routes/SignUp');
@@ -15,6 +17,7 @@ const port = process.env.PORT
 const dbUrl = process.env.DB_URL
 
 app.use(bodyParser.json());
+app.use(cors());
 
 app.use(login);
 app.use(signUp);
