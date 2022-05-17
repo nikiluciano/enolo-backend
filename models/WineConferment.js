@@ -121,7 +121,7 @@ const wineConferment = mongoose.Schema({
         type: winePressingProcess,
         default: null
     },
-    destemmig_process: {
+    destemming_process: {
         _id: false,
         type: destemmingProcess,
         default: null

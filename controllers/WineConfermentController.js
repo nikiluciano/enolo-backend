@@ -143,7 +143,6 @@ exports.deleteWineConferment = [
         } catch(err){
             res.json({ message: err.toString() });
         }
-
 }];
 
 /** PATCH processes */
@@ -205,7 +204,6 @@ exports.updateDestemmingProcess = [
             if(!found){
                 res.status(400).json({msg: "There is no wine conferment with this id"});
             } else {
-
                 found.destemming_process = {
                     waste: req.body.waste,
                     description: req.body.description
