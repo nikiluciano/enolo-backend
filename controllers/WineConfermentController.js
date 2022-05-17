@@ -63,8 +63,8 @@ exports.postWineConferment = [
         let month = ("0" + (dateNowObj.getMonth() + 1)).slice(-2);
         let year = dateNowObj.getFullYear();
         let hours = dateNowObj.getHours();
-        let minutes = dateNowObj.getMinutes();
-        let seconds = dateNowObj.getSeconds();
+        let minutes = ("0" + (dateNowObj.getMinutes())).slice(-2);
+        let seconds = ("0" + (dateNowObj.getSeconds())).slice(-2);
         //format GG/MM/AA - HH/MM/SS
         dateNowObj = (date + "/" + month + "/" + year + " " + hours + ":" + minutes + ":" + seconds);
 
