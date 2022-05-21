@@ -2,7 +2,7 @@ const wineConfermentModel = require("../models/WineConferment");
 const warehouseModel = require("../models/Warehouse");
 
 //Assign value to models fields
-async function valueAssignement(req, res, date) {
+async function valueAssignement(req, res) {
     const wineConferment = new wineConfermentModel()
 
     try {
@@ -12,7 +12,7 @@ async function valueAssignement(req, res, date) {
         wineConferment.typology = req.body.typology
         wineConferment.origin = req.body.origin
         wineConferment._idworker = req.body._idworker
-        wineConferment.date = date
+        wineConferment.date = req.body.date
 
         if(req.body.conferment_process == null){
             wineConferment.status = "DELIVERED"
@@ -57,23 +57,23 @@ async function valueAssignement(req, res, date) {
 exports.postWineConferment = [
     async function postWineConferment(req, res) {
 
-        //Define date to insert it automatically into db
-        let dateNowObj = new Date();
-        let date = ("0" + dateNowObj.getDate()).slice(-2);
-        let month = ("0" + (dateNowObj.getMonth() + 1)).slice(-2);
-        let year = dateNowObj.getFullYear();
-        let hours = dateNowObj.getHours();
-        let minutes = ("0" + (dateNowObj.getMinutes())).slice(-2);
-        let seconds = ("0" + (dateNowObj.getSeconds())).slice(-2);
-        //format GG/MM/AA - HH/MM/SS
-        dateNowObj = (date + "/" + month + "/" + year + " " + hours + ":" + minutes + ":" + seconds);
 
-        const newWineConferment = await valueAssignement(req, res, dateNowObj)
+
+        const newWineConferment = await valueAssignement(req, res)
 
         try {
-            await newWineConferment.save();
-            res.status(200);
-            res.json({msg: "Wine Conferment inserted"});
+            if(newWineConferment.date == null){
+                const dateNow = Date.now();
+                newWineConferment.date = dateNow;
+                await newWineConferment.save();
+                res.status(200);
+                res.json({msg: "Wine Conferment inserted"});
+            }else {
+                await newWineConferment.save();
+                res.status(200);
+                res.json({msg: "Wine Conferment inserted"});
+            }
+
         } catch (err) {
             res.status(400);
             res.json({msg: err.toString()});

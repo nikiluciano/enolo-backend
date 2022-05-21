@@ -4,7 +4,12 @@ const winePressingProcess = mongoose.Schema({
     description: {
         type: String,
         required: false
-    }
+    },
+    date: {
+        type: String,
+        required: true,
+        default: Date.now().toString()
+    },
 });
 
 const bottlingProcess = mongoose.Schema({
@@ -27,6 +32,11 @@ const bottlingProcess = mongoose.Schema({
     description: {
         type: String,
         required: false
+    },
+    date: {
+        type: String,
+        required: true,
+        default: Date.now().toString()
     }
 });
 
@@ -38,6 +48,11 @@ const confermentProcess = mongoose.Schema({
     description: {
         type: String,
         required: false
+    },
+    date: {
+        type: String,
+        required: true,
+        default: Date.now().toString()
     }
 });
 
@@ -49,6 +64,11 @@ const destemmingProcess = mongoose.Schema({
     description: {
         type: String,
         required: false
+    },
+    date: {
+        type: String,
+        required: true,
+        default: Date.now().toString()
     }
 });
 
@@ -56,6 +76,11 @@ const rackingProcess = mongoose.Schema({
     description: {
         type: String,
         required: false
+    },
+    date: {
+        type: String,
+        required: true,
+        default: Date.now().toString()
     }
 });
 
@@ -63,6 +88,11 @@ const refinementProcess = mongoose.Schema({
     description: {
         type: String,
         required: false
+    },
+    date: {
+        type: String,
+        required: true,
+        default: Date.now().toString()
     }
 });
 
@@ -74,6 +104,11 @@ const winemakingProcess = mongoose.Schema({
     description: {
         type: String,
         required: false
+    },
+    date: {
+        type: String,
+        required: true,
+        default: Date.now().toString()
     }
 });
 
@@ -105,7 +140,8 @@ const wineConferment = mongoose.Schema({
     },
     date: {
         type: String,
-        required: true
+        required: true,
+        default: Date.now().toString()
     },
     _idworker: {
         type: String,
