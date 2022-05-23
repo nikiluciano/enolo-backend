@@ -3,11 +3,11 @@ const warehouseModel = require("../models/Warehouse");
 async function insertIntoWarehouse(req, res){
     const warehouse = new warehouseModel()
 
-    if(req.body.bottles_quantity >= 0 &&
+    if(req.body.bottles.bottles_quantity >= 0 &&
         req.body.caps_quantity >= 0 &&
         req.body.tags_quantity >= 0){
 
-        warehouse.bottles_quantity = req.body.bottles_quantity
+        warehouse.bottles = req.body.bottles
         warehouse.caps_quantity = req.body.caps_quantity
         warehouse.tags_quantity = req.body.tags_quantity
 
@@ -73,12 +73,13 @@ exports.updateWarehouse = [
                 } else {
                    await warehouseModel.update(
                         { $set: {
-                            bottles_quantity: warehouse.bottles_quantity,
+
+                            bottles: warehouse.bottles,
                             caps_quantity: warehouse.caps_quantity,
                             tags_quantity: warehouse.tags_quantity}
                         });
 
-                    res.status(200).json({msg: "Warehouse updated succesfully!"});
+                    res.status(200).json({msg: "Warehouse updated successfully!"});
                 }
             }
         } catch (err) {

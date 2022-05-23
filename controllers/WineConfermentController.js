@@ -304,36 +304,43 @@ exports.updateBottlingProcess = [
         try{
             const _idReq = req.params.id;
             const found = await wineConfermentModel.findById(_idReq);
-            const warehouse = await warehouseModel.findOne()
+            const warehouse = await warehouseModel.findOne();
 
             if(!found){
                 res.status(400).json({msg: "There is no wine conferment with this id"});
             } else {
 
-                const bottlesAvailability = await checkWarehouseQuantitiesAvailability(warehouse.bottles_quantity, req.body.bottles_quantity)
+                const bottlesAvailability = await checkWarehouseQuantitiesAvailability(warehouse.bottles.bottles_quantity, req.body.bottles.bottles_quantity)
                 const capsAvailability = await checkWarehouseQuantitiesAvailability(warehouse.caps_quantity, req.body.caps_quantity)
                 const tagsAvailability = await checkWarehouseQuantitiesAvailability(warehouse.tags_quantity, req.body.tags_quantity)
-
+                console.log(" bottlesAvailability "+ bottlesAvailability +" capsAvailability "+capsAvailability+
+                " tagsAvailability "+ tagsAvailability);
                 if(bottlesAvailability && capsAvailability && tagsAvailability){
                     found.status = "READY"
 
                     found.bottling_process = {
-                        bottles_quantity: req.body.bottles_quantity,
+                        bottles: req.body.bottles,
                         caps_quantity: req.body.caps_quantity,
                         tags_quantity: req.body.tags_quantity
                     }
 
                     await wineConfermentModel.findByIdAndUpdate(req.params.id, found, {new:true});
 
-                    await warehouseModel.update(
-                        { $set: {
-                                bottles_quantity: (warehouse.bottles_quantity - req.body.bottles_quantity),
-                                caps_quantity: (warehouse.caps_quantity - req.body.caps_quantity),
-                                tags_quantity: (warehouse.tags_quantity - req.body.tags_quantity) }
-                        });
+                    const format = req.body.bottles.format;
+                    const bottlesRemained = warehouse.bottles.bottles_quantity - req.body.bottles.bottles_quantity;
+
+                    const index=warehouse.bottles.formats;
+                    console.log("index="+index);
+                   /*     {
+                            bottles:{ bottles_quantity:bottlesRemained},
+                            caps_quantity: (warehouse.caps_quantity - req.body.caps_quantity),
+                            tags_quantity: (warehouse.tags_quantity - req.body.tags_quantity) }
+                    );
+*/
 
                     res.status(200).json({msg: "Bottling process updated successfully"});
                 } else {
+                    console.log("bottles_quantity:"+warehouseModel.bottles_quantity);
                     res.status(400).json({msg: "Not enough quantity of bottles, caps and tags"});
                 }
             }
@@ -344,5 +351,6 @@ exports.updateBottlingProcess = [
 ];
 
 async function checkWarehouseQuantitiesAvailability(available, request) {
+    console.log("available="+available+"  request= "+ request)
     return (available - request) >= 0;
 }

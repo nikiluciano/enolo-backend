@@ -12,14 +12,20 @@ const winePressingProcess = mongoose.Schema({
     },
 });
 
-const bottlingProcess = mongoose.Schema({
+const bottles = mongoose.Schema({
     bottles_quantity: {
         type: Number,
-        required: true
+        required:true
     },
-    bottles_type: {
+    format:{
         type: String,
         required: true
+    }
+});
+const bottlingProcess = mongoose.Schema({
+    bottles: {
+        _id: false,
+        type : bottles
     },
     caps_quantity: {
         type: Number,
