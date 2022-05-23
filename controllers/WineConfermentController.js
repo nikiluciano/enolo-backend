@@ -313,9 +313,9 @@ exports.updateBottlingProcess = [
                 const bottlesAvailability = await checkWarehouseQuantitiesAvailability(warehouse.bottles.bottles_quantity, req.body.bottles.bottles_quantity)
                 const capsAvailability = await checkWarehouseQuantitiesAvailability(warehouse.caps_quantity, req.body.caps_quantity)
                 const tagsAvailability = await checkWarehouseQuantitiesAvailability(warehouse.tags_quantity, req.body.tags_quantity)
-                console.log(" bottlesAvailability "+ bottlesAvailability +" capsAvailability "+capsAvailability+
-                " tagsAvailability "+ tagsAvailability);
-                if(bottlesAvailability && capsAvailability && tagsAvailability){
+                console.log(" bottlesAvailability " + bottlesAvailability + " capsAvailability " + capsAvailability +
+                    " tagsAvailability " + tagsAvailability);
+                if (bottlesAvailability && capsAvailability && tagsAvailability) {
                     found.status = "READY"
 
                     found.bottling_process = {
@@ -324,22 +324,35 @@ exports.updateBottlingProcess = [
                         tags_quantity: req.body.tags_quantity
                     }
 
-                    await wineConfermentModel.findByIdAndUpdate(req.params.id, found, {new:true});
+                    await wineConfermentModel.findByIdAndUpdate(req.params.id, found, {new: true});
 
                     const format = req.body.bottles.format;
                     const bottlesRemained = warehouse.bottles.bottles_quantity - req.body.bottles.bottles_quantity;
 
-                    const index=warehouse.bottles.formats;
-                    console.log("index="+index);
-                   /*     {
-                            bottles:{ bottles_quantity:bottlesRemained},
-                            caps_quantity: (warehouse.caps_quantity - req.body.caps_quantity),
-                            tags_quantity: (warehouse.tags_quantity - req.body.tags_quantity) }
-                    );
-*/
+                    const formats = warehouse.bottles.formats;
+                    //   console.log("formats="+ formats);
+                    let index = -1;
+                    let formatQuantity = -1;
 
-                    res.status(200).json({msg: "Bottling process updated successfully"});
-                } else {
+                    for (let i = 0; i < formats.length; i++) {
+                        if (formats[i].format.toString() == format.toString()) {
+                            formatQuantity = formats[i].bottles_quantity;
+                            index = i;
+                            await formats[index].update({$set: {quantity: formatQuantity-req.body.bottles.bottles_quantity}})
+                            await warehouse.update(
+                                {
+                                    $set: {
+                                        caps_quantity: warehouse.caps_quantity - req.body.caps_quantity,
+                                        tags_quantity: warehouse.tags_quantity - req.body.tags_quantity
+                                    }
+                                });
+                             await warehouse.bottles.update({$set: {bottles_quantity: bottlesRemained}});
+                    } else if (i == formats.length - 1 && index == -1) {
+                        res.status(400).json("errore");
+                    }
+                }
+
+            } else {
                     console.log("bottles_quantity:"+warehouseModel.bottles_quantity);
                     res.status(400).json({msg: "Not enough quantity of bottles, caps and tags"});
                 }
