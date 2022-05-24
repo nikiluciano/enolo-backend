@@ -336,19 +336,43 @@ exports.updateBottlingProcess = [
 
                     for (let i = 0; i < formats.length; i++) {
                         if (formats[i].format.toString() == format.toString()) {
-                            formatQuantity = formats[i].bottles_quantity;
-                            index = i;
-                            await formats[index].update({$set: {quantity: formatQuantity-req.body.bottles.bottles_quantity}})
-                            await warehouse.update(
-                                {
-                                    $set: {
-                                        caps_quantity: warehouse.caps_quantity - req.body.caps_quantity,
-                                        tags_quantity: warehouse.tags_quantity - req.body.tags_quantity
-                                    }
+                            console.log("trovato"+i);
+                            formatQuantity = formats[i].quantity;
+                            warehouse.bottles = {
+                                bottles_quantity: bottlesRemained,
+                                formats: {
+                                    quantity: formatQuantity-req.body.bottles.bottles_quantity
+                                }
+                            }
+                            warehouse.caps_quantity = warehouse.caps_quantity - req.body.caps_quantity
+                            warehouse.tags_quantity = warehouse.tags_quantity - req.body.tags_quantity
+                            await warehouseModel.updateOne({},
+                                { $set: {
+                                        bottles:warehouse.bottles,
+                                        caps_quantity: warehouse.caps_quantity,
+                                        tags_quantity: warehouse.tags_quantity}
                                 });
-                             await warehouse.bottles.update({$set: {bottles_quantity: bottlesRemained}});
+
+                          /*  console.log("formats[i]"+formats[i]);
+                            formatQuantity = formats[i].quantity;
+                            console.log("formatQuantity="+formatQuantity);
+                            index = i;
+
+                            warehouse.caps_quantity = warehouse.caps_quantity - req.body.caps_quantity
+                            warehouse.tags_quantity = warehouse.tags_quantity - req.body.tags_quantity
+                            warehouse.bottles.bottles_quantity=bottlesRemained
+                            console.log("warehouse.bottles.bottles_quantity"+warehouse.bottles.bottles_quantity)
+                            console.log("formats[index]1"+formats[index])
+                            console.log("warehouse1"+warehouse)
+                            //formats[index].quantity=formatQuantity-req.body.bottles.bottles_quantity;
+                            console.log("warehouse2"+warehouse)
+                            console.log("formats[index]2"+formats[index])
+                            await warehouse.save()
+                           // await formats.save();
+                            // await warehouse.bottles.update({$set: {bottles_quantity: bottlesRemained}});*/
                     } else if (i == formats.length - 1 && index == -1) {
-                        res.status(400).json("errore");
+                            console.log("non trovato");
+                            res.status(400).json("errore");
                     }
                 }
 
