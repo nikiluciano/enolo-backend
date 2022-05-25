@@ -79,6 +79,7 @@ exports.addFormat = [
                 let i = 0
                 let found = false
 
+                // checks if the format is already present
                 while(warehouse.bottles.formats.length > i){
 
                     if(warehouse.bottles.formats[i].format === newFormat.format){
@@ -114,7 +115,6 @@ exports.patchFormat = [
             const warehouseList = await warehouseModel.find()
 
             if(warehouseList.length !== 0){
-
                 const warehouse = warehouseList[0]
 
                 let i = 0
@@ -194,6 +194,7 @@ async function updateQuantity(req, res, warehouse, tag){
         res.status(400).json({msg: "Quantity should be greater than 0"});
     }
 }
+
 /*
 //UPDATE method
 exports.updateWarehouse = [

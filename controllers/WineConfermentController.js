@@ -331,15 +331,17 @@ exports.updateBottlingProcess = [
                 if((format.quantity >= req.body.bottles.bottles_quantity) && bottlesAvailability && capsAvailability && tagsAvailability){
                     found.status = "READY"
 
+                    // conferment update
                     found.bottling_process = {
                         bottles: req.body.bottles,
                         caps_quantity: req.body.caps_quantity,
                         tags_quantity: req.body.tags_quantity
                     }
 
+                    // warehouse update
                     warehouse.bottles.bottles_quantity -= req.body.bottles.bottles_quantity
-                    warehouse.caps_quantity = req.body.caps_quantity
-                    warehouse.tags_quantity = req.body.tags_quantity
+                    warehouse.caps_quantity -= req.body.caps_quantity
+                    warehouse.tags_quantity -= req.body.tags_quantity
 
                     format.quantity -= req.body.bottles.bottles_quantity
 
