@@ -181,9 +181,9 @@ exports.updateTags = [
 
 async function updateQuantity(req, res, warehouse, tag){
     if(req.body.quantity > 0){
-        if(tag === "Caps"){
+        if(tag === CAPS){
             warehouse.caps_quantity += req.body.quantity
-        } else if(tag === "Tags"){
+        } else if(tag === TAGS){
             warehouse.tags_quantity += req.body.quantity
         }
 
