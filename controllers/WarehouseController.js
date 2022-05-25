@@ -1,5 +1,8 @@
 const warehouseModel = require("../models/Warehouse");
 
+const CAPS = "Caps"
+const TAGS = "Tags"
+
 async function insertIntoWarehouse(req, res){
     const warehouse = new warehouseModel()
 
@@ -144,8 +147,54 @@ exports.patchFormat = [
     }
 ];
 
+exports.updateCaps = [
+    async function updateCaps(req, res) {
+        try {
+            const found = await warehouseModel.find();
 
-//TODO check this; i maybe want to update just caps and tags, because bottles are already managed with patchFormat
+            if(!found){
+                res.status(400).json({msg: "Warehouse not created yet!"});
+            } else {
+                await updateQuantity(req, res, found[0], CAPS)
+            }
+        } catch (err) {
+            res.json({msg: err});
+        }
+    }
+];
+
+exports.updateTags = [
+    async function updateTags(req, res) {
+        try {
+            const found = await warehouseModel.find();
+
+            if(!found){
+                res.status(400).json({msg: "Warehouse not created yet!"});
+            } else {
+                await updateQuantity(req, res, found[0], TAGS)
+            }
+        } catch (err) {
+            res.json({msg: err});
+        }
+    }
+];
+
+async function updateQuantity(req, res, warehouse, tag){
+    if(req.body.quantity > 0){
+        if(tag === "Caps"){
+            warehouse.caps_quantity += req.body.quantity
+        } else if(tag === "Tags"){
+            warehouse.tags_quantity += req.body.quantity
+        }
+
+        await warehouseModel.updateOne({}, warehouse)
+
+        res.status(200).json({msg: tag + " quantity updated successfully!"});
+    } else {
+        res.status(400).json({msg: "Quantity should be greater than 0"});
+    }
+}
+/*
 //UPDATE method
 exports.updateWarehouse = [
     async function updateWarehouse(req, res) {
@@ -176,3 +225,4 @@ exports.updateWarehouse = [
         }
     }
 ];
+ */
