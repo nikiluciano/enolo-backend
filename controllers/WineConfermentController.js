@@ -309,13 +309,26 @@ exports.updateBottlingProcess = [
             if(!found){
                 res.status(400).json({msg: "There is no wine conferment with this id"});
             } else {
-
                 const bottlesAvailability = await checkWarehouseQuantitiesAvailability(warehouse.bottles.bottles_quantity, req.body.bottles.bottles_quantity)
                 const capsAvailability = await checkWarehouseQuantitiesAvailability(warehouse.caps_quantity, req.body.caps_quantity)
                 const tagsAvailability = await checkWarehouseQuantitiesAvailability(warehouse.tags_quantity, req.body.tags_quantity)
-                console.log(" bottlesAvailability " + bottlesAvailability + " capsAvailability " + capsAvailability +
-                    " tagsAvailability " + tagsAvailability);
-                if (bottlesAvailability && capsAvailability && tagsAvailability) {
+
+                const formats = warehouse.bottles.formats
+
+                let i = 0
+                let foundFormat = false
+
+                while(formats.length > i){
+                    if(formats[i].format === req.body.bottles.format){
+                        foundFormat = true
+                        break
+                    }
+                    i += 1
+                }
+
+                const format = formats[i]
+
+                if((format.quantity >= req.body.bottles.bottles_quantity) && bottlesAvailability && capsAvailability && tagsAvailability){
                     found.status = "READY"
 
                     found.bottling_process = {
@@ -324,60 +337,19 @@ exports.updateBottlingProcess = [
                         tags_quantity: req.body.tags_quantity
                     }
 
+                    warehouse.bottles.bottles_quantity -= req.body.bottles.bottles_quantity
+                    warehouse.caps_quantity = req.body.caps_quantity
+                    warehouse.tags_quantity = req.body.tags_quantity
+
+                    format.quantity -= req.body.bottles.bottles_quantity
+
+                    warehouse.bottles.formats[i] = format
+
                     await wineConfermentModel.findByIdAndUpdate(req.params.id, found, {new: true});
+                    await warehouseModel.updateOne({}, warehouse);
 
-                    const format = req.body.bottles.format;
-                    const bottlesRemained = warehouse.bottles.bottles_quantity - req.body.bottles.bottles_quantity;
-
-                    const formats = warehouse.bottles.formats;
-                    //   console.log("formats="+ formats);
-                    let index = -1;
-                    let formatQuantity = -1;
-
-                    for (let i = 0; i < formats.length; i++) {
-                        if (formats[i].format.toString() == format.toString()) {
-                            console.log("trovato"+i);
-                            formatQuantity = formats[i].quantity;
-                            warehouse.bottles = {
-                                bottles_quantity: bottlesRemained,
-                                formats: {
-                                    quantity: formatQuantity-req.body.bottles.bottles_quantity
-                                }
-                            }
-                            warehouse.caps_quantity = warehouse.caps_quantity - req.body.caps_quantity
-                            warehouse.tags_quantity = warehouse.tags_quantity - req.body.tags_quantity
-                            await warehouseModel.updateOne({},
-                                { $set: {
-                                        bottles:warehouse.bottles,
-                                        caps_quantity: warehouse.caps_quantity,
-                                        tags_quantity: warehouse.tags_quantity}
-                                });
-
-                          /*  console.log("formats[i]"+formats[i]);
-                            formatQuantity = formats[i].quantity;
-                            console.log("formatQuantity="+formatQuantity);
-                            index = i;
-
-                            warehouse.caps_quantity = warehouse.caps_quantity - req.body.caps_quantity
-                            warehouse.tags_quantity = warehouse.tags_quantity - req.body.tags_quantity
-                            warehouse.bottles.bottles_quantity=bottlesRemained
-                            console.log("warehouse.bottles.bottles_quantity"+warehouse.bottles.bottles_quantity)
-                            console.log("formats[index]1"+formats[index])
-                            console.log("warehouse1"+warehouse)
-                            //formats[index].quantity=formatQuantity-req.body.bottles.bottles_quantity;
-                            console.log("warehouse2"+warehouse)
-                            console.log("formats[index]2"+formats[index])
-                            await warehouse.save()
-                           // await formats.save();
-                            // await warehouse.bottles.update({$set: {bottles_quantity: bottlesRemained}});*/
-                    } else if (i == formats.length - 1 && index == -1) {
-                            console.log("non trovato");
-                            res.status(400).json("errore");
-                    }
-                }
-
-            } else {
-                    console.log("bottles_quantity:"+warehouseModel.bottles_quantity);
+                    res.status(200).json({msg: "Bottling process updated successfully!"})
+                } else {
                     res.status(400).json({msg: "Not enough quantity of bottles, caps and tags"});
                 }
             }
@@ -388,6 +360,5 @@ exports.updateBottlingProcess = [
 ];
 
 async function checkWarehouseQuantitiesAvailability(available, request) {
-    console.log("available="+available+"  request= "+ request)
     return (available - request) >= 0;
 }

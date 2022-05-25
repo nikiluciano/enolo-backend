@@ -57,6 +57,95 @@ exports.postWarehouse = [
     }
 ];
 
+// PATCH format array by adding a new format
+exports.addFormat = [
+    async function addFormat(req, res) {
+        try{
+            const warehouseList = await warehouseModel.find()
+
+            if(warehouseList.length !== 0){
+
+                const newFormat = {
+                        format: req.body.format,
+                        quantity: req.body.quantity,
+                        description: req.body.description
+                }
+
+                const warehouse = warehouseList[0]
+
+                let i = 0
+                let found = false
+
+                while(warehouse.bottles.formats.length > i){
+
+                    if(warehouse.bottles.formats[i].format === newFormat.format){
+                        found = true
+                        break
+                    }
+                    i += 1
+                }
+
+                if(!found){
+                    warehouse.bottles.formats.push(newFormat)
+                    warehouse.bottles.bottles_quantity += req.body.quantity
+
+                    await warehouseModel.updateOne({}, warehouse)
+
+                    res.status(200).json({msg: "New format added to warehouse"});
+                } else {
+                    res.status(400).json({msg: "Format already present"});
+                }
+            } else {
+                res.status(400).json({msg: "Warehouse not created yet!"});
+            }
+        } catch(err) {
+            res.status(400).json({msg: err.toString()})
+        }
+    }
+];
+
+// PATCH format already present into formats' array
+exports.patchFormat = [
+    async function patchFormat(req, res) {
+        try{
+            const warehouseList = await warehouseModel.find()
+
+            if(warehouseList.length !== 0){
+
+                const warehouse = warehouseList[0]
+
+                let i = 0
+                let found = false
+
+                while(warehouse.bottles.formats.length > i){
+                    if(warehouse.bottles.formats[i].format === req.body.format){
+                        found = true
+                        break
+                    }
+                    i += 1
+                }
+
+                if(found){
+                    warehouse.bottles.bottles_quantity += req.body.quantity
+                    warehouse.bottles.formats[i].quantity += req.body.quantity
+
+                    await warehouseModel.updateOne({}, warehouse)
+
+                    res.status(200).json({msg: "Format " + warehouse.bottles.formats[i].format + " updated successfully!"});
+                } else {
+                    res.status(400).json({msg: "Format not present"});
+                }
+            } else {
+                res.status(400).json({msg: "Warehouse not created yet!"});
+            }
+        } catch(err) {
+            res.status(400).json({msg: err.toString()})
+        }
+    }
+];
+
+
+//TODO check this; i maybe want to update just caps and tags, because bottles are already managed with patchFormat
 //UPDATE method
 exports.updateWarehouse = [
     async function updateWarehouse(req, res) {
@@ -71,12 +160,12 @@ exports.updateWarehouse = [
                 if(warehouse === null){
                     res.status(400).json({msg: "Quantities should be greater than -1!"});
                 } else {
-                   await warehouseModel.update(
+                   await warehouseModel.updateOne(
                         { $set: {
 
                             bottles: warehouse.bottles,
                             caps_quantity: warehouse.caps_quantity,
-                            tags_quantity: warehouse.tags_quantity}
+                            tags_quantity: warehouse.tags_quantity }
                         });
 
                     res.status(200).json({msg: "Warehouse updated successfully!"});
@@ -86,4 +175,4 @@ exports.updateWarehouse = [
             res.json({msg: err});
         }
     }
-]
+];

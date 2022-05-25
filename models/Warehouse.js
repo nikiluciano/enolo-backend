@@ -1,5 +1,8 @@
 const mongoose = require('mongoose');
+
 const format = mongoose.Schema({
+    _id: false,
+
     format: {
         type: String,
         required: true
@@ -12,23 +15,23 @@ const format = mongoose.Schema({
         type: String,
         required: true
     }
-})
+});
+
 const bottles = mongoose.Schema({
     bottles_quantity: {
         type: Number,
         required:true
     },
-    formats:[
+    formats: [
         format
     ]
-})
+});
 
 const warehouse = mongoose.Schema({
-
     bottles: {
-        _id: false,
-       type : bottles
-
+         _id: false,
+        type : bottles,
+        required: true
     },
     caps_quantity: {
         type: Number,

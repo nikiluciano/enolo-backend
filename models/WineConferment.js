@@ -22,6 +22,7 @@ const bottles = mongoose.Schema({
         required: true
     }
 });
+
 const bottlingProcess = mongoose.Schema({
     bottles: {
         _id: false,
@@ -168,6 +169,7 @@ const wineConferment = mongoose.Schema({
         type: destemmingProcess,
         default: null
     },
+
     winemaking_process: {
         _id: false,
         type: winemakingProcess,
