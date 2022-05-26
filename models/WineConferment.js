@@ -4,17 +4,29 @@ const winePressingProcess = mongoose.Schema({
     description: {
         type: String,
         required: false
+    },
+    date: {
+        type: String,
+        required: true,
+        default: Date.now().toString()
+    },
+});
+
+const bottles = mongoose.Schema({
+    bottles_quantity: {
+        type: Number,
+        required:true
+    },
+    format:{
+        type: String,
+        required: true
     }
 });
 
 const bottlingProcess = mongoose.Schema({
-    bottles_quantity: {
-        type: Number,
-        required: true
-    },
-    bottles_type: {
-        type: String,
-        required: true
+    bottles: {
+        _id: false,
+        type : bottles
     },
     caps_quantity: {
         type: Number,
@@ -27,6 +39,11 @@ const bottlingProcess = mongoose.Schema({
     description: {
         type: String,
         required: false
+    },
+    date: {
+        type: String,
+        required: true,
+        default: Date.now().toString()
     }
 });
 
@@ -38,6 +55,11 @@ const confermentProcess = mongoose.Schema({
     description: {
         type: String,
         required: false
+    },
+    date: {
+        type: String,
+        required: true,
+        default: Date.now().toString()
     }
 });
 
@@ -49,6 +71,11 @@ const destemmingProcess = mongoose.Schema({
     description: {
         type: String,
         required: false
+    },
+    date: {
+        type: String,
+        required: true,
+        default: Date.now().toString()
     }
 });
 
@@ -56,6 +83,11 @@ const rackingProcess = mongoose.Schema({
     description: {
         type: String,
         required: false
+    },
+    date: {
+        type: String,
+        required: true,
+        default: Date.now().toString()
     }
 });
 
@@ -63,6 +95,11 @@ const refinementProcess = mongoose.Schema({
     description: {
         type: String,
         required: false
+    },
+    date: {
+        type: String,
+        required: true,
+        default: Date.now().toString()
     }
 });
 
@@ -74,6 +111,11 @@ const winemakingProcess = mongoose.Schema({
     description: {
         type: String,
         required: false
+    },
+    date: {
+        type: String,
+        required: true,
+        default: Date.now().toString()
     }
 });
 
@@ -105,7 +147,8 @@ const wineConferment = mongoose.Schema({
     },
     date: {
         type: String,
-        required: true
+        required: true,
+        default: Date.now().toString()
     },
     _idworker: {
         type: String,
@@ -126,6 +169,7 @@ const wineConferment = mongoose.Schema({
         type: destemmingProcess,
         default: null
     },
+
     winemaking_process: {
         _id: false,
         type: winemakingProcess,
