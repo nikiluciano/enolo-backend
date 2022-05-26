@@ -189,7 +189,7 @@ exports.updateWinePressingProcess = [
 
                 await wineConfermentModel.findByIdAndUpdate(req.params.id, found, {new:true});
 
-                res.status(200).json({msg: "Conferment process updated successfully"});
+                res.status(200).json({msg: "Wine pressing process updated successfully"});
             }
         } catch (err) {
             res.json({msg: "Incorrect id"});
@@ -328,35 +328,39 @@ exports.updateBottlingProcess = [
 
                 const format = formats[i]
 
-                if((format.quantity >= req.body.bottles.bottles_quantity) && bottlesAvailability && capsAvailability && tagsAvailability){
-                    found.status = "READY"
-
-                    // conferment update
-                    found.bottling_process = {
-                        bottles: req.body.bottles,
-                        caps_quantity: req.body.caps_quantity,
-                        tags_quantity: req.body.tags_quantity
-                    }
-
-                    // warehouse update
-                    warehouse.bottles.bottles_quantity -= req.body.bottles.bottles_quantity
-                    warehouse.caps_quantity -= req.body.caps_quantity
-                    warehouse.tags_quantity -= req.body.tags_quantity
-
-                    format.quantity -= req.body.bottles.bottles_quantity
-
-                    warehouse.bottles.formats[i] = format
-
-                    await wineConfermentModel.findByIdAndUpdate(req.params.id, found, {new: true});
-                    await warehouseModel.updateOne({}, warehouse);
-
-                    res.status(200).json({msg: "Bottling process updated successfully!"})
+                if(!foundFormat){
+                    res.status(400).json({msg:"Bottles with capacity " + req.body.bottles.format + " not present into warehouse"});
                 } else {
-                    res.status(400).json({msg: "Not enough quantity of bottles, caps and tags"});
+                    if ((format.quantity >= req.body.bottles.bottles_quantity) && bottlesAvailability && capsAvailability && tagsAvailability) {
+                        found.status = "READY"
+
+                        // conferment update
+                        found.bottling_process = {
+                            bottles: req.body.bottles,
+                            caps_quantity: req.body.caps_quantity,
+                            tags_quantity: req.body.tags_quantity
+                        }
+
+                        // warehouse update
+                        warehouse.bottles.bottles_quantity -= req.body.bottles.bottles_quantity
+                        warehouse.caps_quantity -= req.body.caps_quantity
+                        warehouse.tags_quantity -= req.body.tags_quantity
+
+                        format.quantity -= req.body.bottles.bottles_quantity
+
+                        warehouse.bottles.formats[i] = format
+
+                        await wineConfermentModel.findByIdAndUpdate(req.params.id, found, {new: true});
+                        await warehouseModel.updateOne({}, warehouse);
+
+                        res.status(200).json({msg: "Bottling process updated successfully!"})
+                    } else {
+                        res.status(400).json({msg: "Not enough quantity of bottles, caps and tags"});
+                    }
                 }
             }
         } catch (err) {
-            res.json({msg: "Incorrect id"});
+            res.json({msg: "Incorrect id" + err});
         }
     }
 ];
