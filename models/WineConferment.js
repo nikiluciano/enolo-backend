@@ -47,22 +47,6 @@ const bottlingProcess = mongoose.Schema({
     }
 });
 
-const confermentProcess = mongoose.Schema({
-    quantity: {
-        type: Number,
-        required: true
-    },
-    description: {
-        type: String,
-        required: false
-    },
-    date: {
-        type: String,
-        required: true,
-        default: Date.now().toString()
-    }
-});
-
 const destemmingProcess = mongoose.Schema({
     waste: {
         type: Number,
@@ -125,40 +109,54 @@ const wineConferment = mongoose.Schema({
         enum: ["DELIVERED", "PENDING", "READY"],
         required: true
     },
+
     country: {
         type: String,
         required: true
     },
+
     supplier: {
         type: String,
         required: true
     },
+
     description: {
         type: String,
         required: true
     },
+
     typology: {
         type: String,
         required: true
     },
+
     origin: {
         type: String,
         required: true
     },
+
     date: {
         type: String,
         required: true,
         default: Date.now().toString()
     },
+
+    quantity: {
+        type: Number,
+        required: true
+    },
+
     _idworker: {
         type: String,
         required: true
     },
-    conferment_process: {
-        _id: false,
-        type: confermentProcess,
+
+    current_process: {
+        type: String,
+        enum: [null, "wine_pressing_process", "destemming_process", "winemaking_process", "racking_process", "refinement_process", "bottling_process"],
         default: null
     },
+
     wine_pressing_process: {
         _id: false,
         type: winePressingProcess,
@@ -190,6 +188,8 @@ const wineConferment = mongoose.Schema({
         type: bottlingProcess,
         default: null
     }
+},{
+    timestamps: {createdAt: true, updatedAt: true}
 });
 
 module.exports = mongoose.model("wine_conferment", wineConferment);

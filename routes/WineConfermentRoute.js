@@ -4,7 +4,7 @@ const auth = require("../middlewares/Auth")
 const wineConfermentController = require("../controllers/WineConfermentController");
 
 router.get("/wineConferment/:id",auth,  wineConfermentController.getOneWineConferment);
-router.patch("/wineConferment/confermentProcess/:id",auth, wineConfermentController.updateConfermentProcess);
+//router.patch("/wineConferment/confermentProcess/:id",auth, wineConfermentController.updateConfermentProcess);
 router.patch("/wineConferment/bottlingProcess/:id",auth, wineConfermentController.updateBottlingProcess);
 router.patch("/wineConferment/winePressingProcess/:id",auth, wineConfermentController.updateWinePressingProcess);
 router.patch("/wineConferment/destemmingProcess/:id",auth, wineConfermentController.updateDestemmingProcess);

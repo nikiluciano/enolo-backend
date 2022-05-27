@@ -13,37 +13,40 @@ async function valueAssignement(req, res) {
         wineConferment.origin = req.body.origin
         wineConferment._idworker = req.body._idworker
         wineConferment.date = req.body.date
+        wineConferment.quantity = req.body.quantity
 
-        if(req.body.conferment_process == null){
+        if(req.body.wine_pressing_process == null){
             wineConferment.status = "DELIVERED"
         } else {
             wineConferment.status = "PENDING"
-            wineConferment.conferment_process = req.body.conferment_process
-        }
-
-        if(req.body.wine_pressing_process != null){
+            wineConferment.current_process = "wine_pressing_process"
             wineConferment.wine_pressing_process = req.body.wine_pressing_process
         }
 
         if(req.body.destemmig_process != null){
+            wineConferment.current_process = "destemmig_process"
             wineConferment.destemmig_process = req.body.destemmig_process
 
         }
 
         if(req.body.winemaking_process != null){
+            wineConferment.current_process = "winemaking_process"
             wineConferment.winemaking_process = req.body.winemaking_process
 
         }
         if(req.body.racking_process != null){
+            wineConferment.current_process = "racking_process"
             wineConferment.racking_process = req.body.racking_process
         }
 
         if(req.body.refinement_process != null){
+            wineConferment.current_process = "refinement_process"
             wineConferment.refinement_process = req.body.refinement_process
         }
 
         if(!(req.body.bottling_process == null)){
             wineConferment.status = "READY"
+            wineConferment.current_process = "bottling_process"
             wineConferment.bottling_process = req.body.bottling_process
         }
 
@@ -57,21 +60,20 @@ async function valueAssignement(req, res) {
 exports.postWineConferment = [
     async function postWineConferment(req, res) {
 
-
-
         const newWineConferment = await valueAssignement(req, res)
 
         try {
             if(newWineConferment.date == null){
                 const dateNow = Date.now();
+
                 newWineConferment.date = dateNow;
+
                 await newWineConferment.save();
-                res.status(200);
-                res.json({msg: "Wine Conferment inserted"});
+
+                res.status(200).json({msg: "Wine Conferment inserted"});
             }else {
                 await newWineConferment.save();
-                res.status(200);
-                res.json({msg: "Wine Conferment inserted"});
+                res.status(200).json({msg: "Wine Conferment inserted"});
             }
 
         } catch (err) {
@@ -90,13 +92,12 @@ exports.getOneWineConferment = [
             if(!found){
                 res.status(400).json({msg: "There is no wine conferment with this id"});
             } else {
-                res.status(200);
-                res.send(found);
+                res.status(200).json(found);
             }
         } catch (err) {
             res.json({msg: "Incorrect id"});
         }
-    }];
+}];
 
 /*
 //patch method updating conferment by id
@@ -122,13 +123,11 @@ exports.updateWineConferment = [
 exports.getAllWineConferment = [
     async function getAllWineConferment(req, res){
         try{
-            const wineConferment = await wineConfermentModel.find();
+            const wineConferment = await wineConfermentModel.find().sort({"updatedAt": -1});
 
-            res.status(200);
-            res.json(wineConferment);
+            res.status(200).json(wineConferment);
         }catch (err){
-            res.status(400);
-            res.json({msg: "Couldn't get all wine conferment"});
+            res.status(400).json({msg: "Couldn't get all wine conferment"});
         }
 }];
 
@@ -138,14 +137,14 @@ exports.deleteWineConferment = [
         try{
             const _idReq = req.params.id;
             await wineConfermentModel.findByIdAndRemove(_idReq)
-            res.status(200);
-            res.json({msg: "conferment deleted successfully"});
+            res.status(200).json({msg: "conferment deleted successfully"});
         } catch(err){
             res.json({ message: err.toString() });
         }
 }];
 
 /** PATCH processes */
+/*
 exports.updateConfermentProcess = [
     async function confermentProcess (req,res) {
         try{
@@ -171,6 +170,7 @@ exports.updateConfermentProcess = [
         }
     }
 ];
+ */
 
 exports.updateWinePressingProcess = [
     async function winePressingProcess (req,res) {
@@ -182,6 +182,7 @@ exports.updateWinePressingProcess = [
                 res.status(400).json({msg: "There is no wine conferment with this id"});
             } else {
                 found.status = "PENDING"
+                found.current_process = "wine_pressing_process"
 
                 found.wine_pressing_process = {
                     description: req.body.description
@@ -207,6 +208,7 @@ exports.updateDestemmingProcess = [
                 res.status(400).json({msg: "There is no wine conferment with this id"});
             } else {
                 found.status = "PENDING"
+                found.current_process = "destemming_process"
 
                 found.destemming_process = {
                     waste: req.body.waste,
@@ -233,6 +235,7 @@ exports.updateWinemakingProcess = [
                 res.status(400).json({msg: "There is no wine conferment with this id"});
             } else {
                 found.status = "PENDING"
+                found.current_process = "winemaking_process"
 
                 found.winemaking_process = {
                     waste: req.body.waste,
@@ -259,6 +262,7 @@ exports.updateRackingProcess = [
                 res.status(400).json({msg: "There is no wine conferment with this id"});
             } else {
                 found.status = "PENDING"
+                found.current_process = "racking_process"
 
                 found.racking_process = {
                     description: req.body.description
@@ -284,6 +288,7 @@ exports.updateRefinementProcess = [
                 res.status(400).json({msg: "There is no wine conferment with this id"});
             } else {
                 found.status = "PENDING"
+                found.current_process = "refinement_process"
 
                 found.refinement_process = {
                     description: req.body.description
@@ -333,6 +338,7 @@ exports.updateBottlingProcess = [
                 } else {
                     if ((format.quantity >= req.body.bottles.bottles_quantity) && bottlesAvailability && capsAvailability && tagsAvailability) {
                         found.status = "READY"
+                        found.current_process = "bottling_process"
 
                         // conferment update
                         found.bottling_process = {
