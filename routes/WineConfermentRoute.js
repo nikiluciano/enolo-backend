@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const auth = require("../middlewares/Auth")
+const admin= require("../middlewares/AdminAuth")
 const wineConfermentController = require("../controllers/WineConfermentController");
 
 router.get("/wineConferment/:id",auth,  wineConfermentController.getOneWineConferment);
@@ -13,5 +14,5 @@ router.patch("/wineConferment/rackingProcess/:id",auth, wineConfermentController
 router.patch("/wineConferment/refinementProcess/:id",auth, wineConfermentController.updateRefinementProcess);
 router.get("/wineConferment",auth, wineConfermentController.getAllWineConferment);
 router.post("/wineConferment",auth,  wineConfermentController.postWineConferment);
-router.delete("/wineConferment/:id",auth,  wineConfermentController.deleteWineConferment);
+router.delete("/wineConferment/:id",auth, admin, wineConfermentController.deleteWineConferment);
 module.exports = router;
