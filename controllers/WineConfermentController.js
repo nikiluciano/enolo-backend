@@ -84,7 +84,7 @@ exports.postWineConferment = [
 
 // Get one conferment method
 exports.getOneWineConferment = [
-    async function getOneSuppliers(req, res) {
+    async function getOneWineConferment(req, res) {
         try{
             const _idReq = req.params.id;
             const found = await wineConfermentModel.findById(_idReq);
