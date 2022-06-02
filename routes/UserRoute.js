@@ -7,9 +7,9 @@ router.use(auth);
 
 //TODO da testare le patch
 
-router.get("/users", userController.getAllUsers);
-router.get("/user/:username", userController.getOneUser);
-router.patch("/user/:username", userController.patchUser);
-router.patch("/user/:username", userController.updateRole);
-router.delete("/user/:username",userController.deleteUser);
+router.get("", userController.getAllUsers);
+router.get("/:username", userController.getOneUser);
+router.patch("/:username", userController.patchUser);
+router.patch("/role/:username", userController.updateRole);
+router.delete("/:username",userController.deleteUser);
 module.exports = router;

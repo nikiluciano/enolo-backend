@@ -23,7 +23,7 @@ app.use(cors());
 app.use(login);
 app.use(signUp);
 app.use(wineConfermentRoute);
-app.use(userRoute);
+app.use("/users",userRoute);
 app.use("/warehouse", warehouseRoute);
 
 app.get("/welcome", auth,  (req, res) => {

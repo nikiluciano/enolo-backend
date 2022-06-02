@@ -43,8 +43,8 @@ exports.patchUser = [
     async function patchUser(req, res) {
     const user = new userModel();
     try{
-        await userModel.findOne({username: req.body.username});
-        if(!found)
+       const exist = await userModel.findOne({username: req.body.username});
+        if(!exist)
             user.username = req.body.username;
         else{
             res.status(409).json("An account with this username already exists")
@@ -58,25 +58,25 @@ exports.patchUser = [
     } catch(e){
         res.status(400).json(e.toString());
     }
+        console.log("user="+user+"\n");
+        console.log("link="+req.params.username)
         try {
-            const found = await userModel.findOne({username: req.params.username});
-            if (!found) {
-                res.status(404).json({msg: "There is no users with this username"});
-            } else {
-                found.role = req.body.role;
-                found.save();
-                res.status(200).json({msg: "Role changed successfully"});
-            }
+          //  await userModel.updateOne({username: req.params.username},user);
+           const filter = {username:req.params.username}
+           const found = await userModel.updateOne(filter,user);
+           console.log("found"+found)
+           res.status(200).json({msg: "User updated successfully"});
+
         } catch (err) {
-            res.json({msg: "Incorrect username"});
+            res.status(404).json({msg: "Incorrect username"});
         }
     }];
 
 exports.deleteUser = [
     async function deleteUser(req, res) {
-        const found = await  userModel.findOneAndRemove({username:req.params.username})
+        const found = await userModel.deleteOne({username:req.params.username})
         if(!found)
             res.status(400).json({msg: "There is no users with this username"});
         else
-            res.status(200).json({msg:"User deleted succesfully"});
+            res.status(200).json({msg:"User deleted successfully"});
 }]
