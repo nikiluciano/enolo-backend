@@ -8,6 +8,7 @@ const login = require("./routes/Login");
 const signUp = require('./routes/SignUp');
 const wineConfermentRoute = require("./routes/WineConfermentRoute");
 const warehouseRoute = require("./routes/WarehouseRoute");
+const userRoute = require("./routes/UserRoute");
 
 const app = express();
 
@@ -22,6 +23,7 @@ app.use(cors());
 app.use(login);
 app.use(signUp);
 app.use(wineConfermentRoute);
+app.use("/users",userRoute);
 app.use("/warehouse", warehouseRoute);
 
 app.get("/welcome", auth,  (req, res) => {
