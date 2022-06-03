@@ -4,12 +4,12 @@ const userModel = require("../models/User");
 module.exports = async function registerUser(req,res) {
     //fun replace removes all white spaces
     const passwordReq = req.body.password;
-    const usernameReq = req.body.username.replace(/ /g, '');
-    const emailReq = req.body.email.replace(/ /g, '');
-    const nameReq = req.body.name.replace(/ /g, '');
-    const surnameReq = req.body.surname.replace(/ /g, '');
-    const phoneReq = req.body.phone.replace(/ /g, '');
-    const addressReq = req.body.address.replace(/ /g, '');
+    const usernameReq = req.body.username;
+    const emailReq = req.body.email;
+    const nameReq = req.body.name;
+    const surnameReq = req.body.surname;
+    const phoneReq = req.body.phone;
+    const addressReq = req.body.address;
     const roleReq = "WORKER"
 
     if(passwordReq === ""){
@@ -18,6 +18,7 @@ module.exports = async function registerUser(req,res) {
     }
 
     const encryptedPassword = await bcrypt.hash(passwordReq,10);
+  
     const newUser = new userModel({
         username: usernameReq,
         password: encryptedPassword,
@@ -30,17 +31,18 @@ module.exports = async function registerUser(req,res) {
     });
 
     const found = await userModel.findOne({username:req.body.username}).exec();
+  
     if(found) {
         res.status(409);
         res.json( {msg:"This account already exists"} );
     } else {
         try {
             const savedUser = await newUser.save();
-            res.json(savedUser);
+
+            res.status(200).json(savedUser);
         } catch (err) {
             console.log(err)
-            res.status(400);
-            res.json( {msg: err} );
+            res.status(400).json( {msg: err} );
         }
     }
 }
