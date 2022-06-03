@@ -3,11 +3,11 @@ const router = express.Router();
 const supplierController = require("../controllers/SuppliersController");
 const auth = require ("../middlewares/Auth");
 
-router.use(auth);  //To verify in every routes if user is logged
+router.use(auth);
 
-router.get("/suppliers",supplierController.getAllSuppliers);
-router.get("/suppliers/:username",supplierController.getOneSupplier);
-router.post("/supplier",supplierController.insertSupplier);
-router.patch("/supplier/:id",supplierController.updateSupplier);
+router.get("",supplierController.getAllSuppliers);
+router.get("/:id",supplierController.getOneSupplier);
+router.post("",supplierController.insertSupplier);
+router.patch("/:id",supplierController.updateSupplier);
 
 module.exports = router;
