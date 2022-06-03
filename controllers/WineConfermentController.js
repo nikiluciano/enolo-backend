@@ -1,5 +1,7 @@
 const wineConfermentModel = require("../models/WineConferment");
 const warehouseModel = require("../models/Warehouse");
+const url = require('url');
+const querystring = require('querystring');
 
 //Assign value to models fields
 async function valueAssignement(req, res) {
@@ -131,13 +133,57 @@ exports.getAllWineConferment = [
         }
 }];
 
+exports.getConfermentsByFilters = [
+    async function getConfermentsByFilters(req, res){
+        try{
+            const queryUrl = url.parse(req.url, true).query;
+
+            const status = queryUrl["status"];
+            const supplier = queryUrl["supplier"];
+            const typology = queryUrl["typology"];
+            let sort = queryUrl["sort"];
+
+            const filter = {
+                status: status,
+                supplier: supplier,
+                typology: typology
+            }
+
+            console.log(filter);
+
+            if(status === undefined) delete filter.status
+            if(supplier === undefined) delete filter.supplier
+            if(typology === undefined) delete filter.typology
+
+            console.log(filter);
+
+            // if sort is undefined, default value is -1
+            if(sort === undefined){
+                sort = -1
+            }
+
+            const wineConferment = await wineConfermentModel.find(
+                filter
+            ).sort({"updatedAt": sort}).exec();
+
+            res.status(200).json(wineConferment);
+        } catch (err) {
+            res.status(400).json({msg: "Couldn't get all wine conferment"});
+        }
+    }
+];
+
 //delete conferment method
 exports.deleteWineConferment = [
     async function (req, res){
         try{
-            const _idReq = req.params.id;
+            const _idReq = req.body.id;
+
+            console.log(req.body);
+
             await wineConfermentModel.findByIdAndRemove(_idReq)
-            res.status(200).json({msg: "conferment deleted successfully"});
+
+            res.status(200).json({msg: "Conferment deleted successfully"});
         } catch(err){
             res.json({ message: err.toString() });
         }
