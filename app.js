@@ -4,6 +4,8 @@ const bodyParser = require('body-parser');
 const cors = require("cors");
 
 const auth = require("./middlewares/Auth");
+
+const supplierRoute = require("./routes/SupplierRoute");
 const login = require("./routes/Login");
 const signUp = require('./routes/SignUp');
 const wineConfermentRoute = require("./routes/WineConfermentRoute");
@@ -22,8 +24,9 @@ app.use(cors());
 
 app.use(login);
 app.use(signUp);
+app.use("/suppliers", supplierRoute);
 app.use(wineConfermentRoute);
-app.use("/users",userRoute);
+app.use("/users", userRoute);
 app.use("/warehouse", warehouseRoute);
 
 app.get("/welcome", auth,  (req, res) => {
