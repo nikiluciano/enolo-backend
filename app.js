@@ -11,6 +11,7 @@ const signUp = require('./routes/SignUp');
 const wineConfermentRoute = require("./routes/WineConfermentRoute");
 const warehouseRoute = require("./routes/WarehouseRoute");
 const userRoute = require("./routes/UserRoute");
+const statisticsRoute = require("./routes/StatisticsRoute")
 
 const app = express();
 
@@ -26,6 +27,7 @@ app.use(login);
 app.use(signUp);
 app.use("/suppliers", supplierRoute);
 app.use(wineConfermentRoute);
+app.use("/statistics",statisticsRoute);
 app.use("/users", userRoute);
 app.use("/warehouse", warehouseRoute);
 
