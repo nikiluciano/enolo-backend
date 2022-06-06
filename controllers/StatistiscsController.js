@@ -12,10 +12,7 @@ exports.getStatsSupplierQuantity = [
                         }
                     }
                 }])
-            console.log(sum)
-
             res.status(200).json(sum);
-
         } catch {
             res.status(400).json({msg: "Couldn't get all wine conferment"});
         }
@@ -33,10 +30,7 @@ exports.getStatsTypologyQuantity = [
                         }
                     }
                 }])
-            console.log(sum)
-
             res.status(200).json(sum);
-
         } catch {
             res.status(400).json({msg: "Couldn't get all wine conferment"});
         }
@@ -44,37 +38,23 @@ exports.getStatsTypologyQuantity = [
 
 exports.getStatsWaste = [
     async function getStatsWaste(req, res) {
-    console.log("Entra")
-        try { //wineMaking, destemming
+        try {
             const waste = await wineConfermentModel.aggregate([
                 {
-                   $group: {
+                    $group: {
                         _id: "$unset",
-                        wineMakingWaste: {
-                            $sum: "$winemaking_process.waste"
-                        },
                         destemmingWaste: {
                             $sum: "$destemming_process.waste"
+                        },
+                        winemakingWaste: {
+                            $sum: "$winemaking_process.waste"
                         },
                         totalQuantity: {
                             $sum: "$quantity"
                         },
-                        totalWaste: { $sum : {$add: ['$winemaking_process.waste', '$destemming_process.waste']} }
-                   },
-               /*     $project:{
-                       totalWaste:{
-                           $add: { wineMakingWaste: {
-                                   $sum: "$winemaking_process.waste"
-                               },
-                               destemmingWaste: {
-                                   $sum: "$destemming_process.waste"
-                               } }
-                       }
-                    }*/
+                       totalWaste: { $sum : {$add: [{$ifNull:['$destemming_process.waste', 0]},{$ifNull:['$winemaking_process.waste', 0]} ]} }
+                    }
                 }])
-        //    waste.totalWaste = waste.destemmingWaste + waste.wineMakingWaste
-            console.log(waste);
-
             res.status(200).json(waste);
 
         } catch {
