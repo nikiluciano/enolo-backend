@@ -1,34 +1,44 @@
-const url = require("url");
 const wineConfermentModel = require("../models/WineConferment");
 
-exports.getStatsSuppierQuantity = [
+exports.getStatsSupplierQuantity = [
 async function getStatsSupplierQuantity(req, res){
     try {
-        const queryUrl = url.parse(req.url, true).query;
+        const sum = await wineConfermentModel.aggregate([
+            {
+                $group: {
+                    _id: "$supplier",
+                    total: {
+                        $sum: "$quantity"
+                    }
+                }
+            } ] )
+        console.log(sum)
 
-
-        const supplier = queryUrl["supplier"];
-        const quantity = queryUrl["quantity"]
-        let sort = queryUrl["sort"];
-
-        const filter = {
-            supplier: supplier,
-            quantity: quantity
-        }
-        console.log(filter)
-        if(sort === undefined){
-            sort = -1;
-        }
-
-        const conferment = await wineConfermentModel.find(
-            filter
-        ).select(supplier).exec();
-        console.log(conferment)
-
-
-        res.status(200).json(conferment);
+        res.status(200).json(sum);
 
     }catch{
         res.status(400).json({msg: "Couldn't get all wine conferment"});
     }
 }];
+
+exports.getStatsTypologyQuantity = [
+    async function getStatsTypologyQuantity(req, res){
+        try {
+            const sum = await wineConfermentModel.aggregate([
+                {
+                    $group: {
+                        _id: "$typology",
+                        total: {
+                            $sum: "$quantity"
+                        }
+                    }
+                } ] )
+            console.log(sum)
+
+            res.status(200).json(sum);
+
+        }catch{
+            res.status(400).json({msg: "Couldn't get all wine conferment"});
+        }
+    }];
+
