@@ -16,7 +16,7 @@ exports.getStatsSupplierQuantity = [
         } catch {
             res.status(400).json({msg: "Couldn't get all wine conferment"});
         }
-    }];
+}];
 
 exports.getStatsTypologyQuantity = [
     async function getStatsTypologyQuantity(req, res) {
@@ -34,7 +34,7 @@ exports.getStatsTypologyQuantity = [
         } catch {
             res.status(400).json({msg: "Couldn't get all wine conferment"});
         }
-    }];
+}];
 
 exports.getStatsWaste = [
     async function getStatsWaste(req, res) {
@@ -55,9 +55,10 @@ exports.getStatsWaste = [
                        totalWaste: { $sum : {$add: [{$ifNull:['$destemming_process.waste', 0]},{$ifNull:['$winemaking_process.waste', 0]} ]} }
                     }
                 }])
-            res.status(200).json(waste);
+
+            res.status(200).json(waste[0]);
 
         } catch {
             res.status(400).json({msg: "Couldn't get waste"});
         }
-    }];
+}];
