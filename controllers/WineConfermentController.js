@@ -273,10 +273,10 @@ exports.updateDestemmingProcess = [
 
 exports.updateWinemakingProcess = [
     async function winemakingProcess (req,res) {
+
         try{
             const _idReq = req.params.id;
             const found = await wineConfermentModel.findById(_idReq);
-
             if(!found){
                 res.status(400).json({msg: "There is no wine conferment with this id"});
             } else {
@@ -287,13 +287,12 @@ exports.updateWinemakingProcess = [
                     waste: req.body.waste,
                     description: req.body.description
                 }
-
-                await wineConfermentModel.findByIdAndUpdate(req.params.id, found, {new:true});
+                await wineConfermentModel.findByIdAndUpdate(_idReq, found, {new:true});
 
                 res.status(200).json({msg: "Winemaking process updated successfully"});
             }
         } catch (err) {
-            res.json({msg: "Incorrect id"});
+            res.status(400).json({msg: "Incorrect id"});
         }
     }
 ];
