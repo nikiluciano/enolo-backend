@@ -1,39 +1,34 @@
-const supplier = require("../models/Supplier");
-const conferment = require("../models/WineConferment")
+const url = require("url");
+const wineConfermentModel = require("../models/WineConferment");
 
-exports.getStatsSupplierQuantity = [
-    async function (req, res) {
-        let quantity_total = 0;
-        let supplierName = null;
+exports.getStatsSuppierQuantity = [
+async function getStatsSupplierQuantity(req, res){
+    try {
+        const queryUrl = url.parse(req.url, true).query;
 
-        try {
-            const suppliers = await supplier.find();
-            console.log(suppliers);
-            try{
-                const conferments = await conferment.find()
-                let i = 0;
-                let j = 0;
-                while(i < suppliers.length) {
-                    while (j < conferments.length) {
-                        if(suppliers[i].username === conferments[j].supplier)
-                            quantity_total+=conferments[j].quantity
-                            supplierName=suppliers[i].username
-                        j++;
-                    }
-                    const result = {supplierName,quantity_total}
-                    console.log(result);
-                    res.json(result);
-                    quantity_total=0;
-                    i++;
-                }
-            }catch(e){
 
-            }
-        } catch (err) {
-            res.status(400).json({msg: "An error is occured during the calculation"});
+        const supplier = queryUrl["supplier"];
+        const quantity = queryUrl["quantity"]
+        let sort = queryUrl["sort"];
+
+        const filter = {
+            supplier: supplier,
+            quantity: quantity
+        }
+        console.log(filter)
+        if(sort === undefined){
+            sort = -1;
         }
 
+        const conferment = await wineConfermentModel.find(
+            filter
+        ).select(supplier).exec();
+        console.log(conferment)
 
 
+        res.status(200).json(conferment);
+
+    }catch{
+        res.status(400).json({msg: "Couldn't get all wine conferment"});
     }
-];
+}];
