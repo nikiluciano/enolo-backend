@@ -23,18 +23,9 @@ exports.login = [
             if (user  && (await bcrypt.compare(password, user.password))) {
 
                 // Create token
-                const tokenGenerated = jwt.sign(
-                    { username: username },
-                    process.env.TOKEN_KEY,
-                    { expiresIn: "12h" },
-                    null
-                );
+                const tokenGenerated =  await createToken(username)
 
-                const refreshTokenGenerated = jwt.sign(
-                    { username: username },
-                    process.env.REFRESH_TOKEN_KEY,
-                    { expiresIn: "24h" },
-                    null);
+                const refreshTokenGenerated = await refreshJwtGenerated(username)
 
                 const response = {
                     token: tokenGenerated,
@@ -75,33 +66,18 @@ exports.login = [
 exports.refreshToken = [
     async function refreshToken(req, res) {
         try{
-            const expiredToken = req.body.expiredToken
             const refreshToken = req.body.refreshToken
             const username = req.body.username
 
-            console.log("expired token input " + expiredToken);
-            console.log("refresh token input " + refreshToken);
-
             const found = await Auth.findOne({username: username}).exec();
-
-            console.log("found " + found);
 
             if (!found){
                 res.status(404).json({msg: "Token not present into database"});
             } else {
                 if(refreshToken === found.refreshToken) {
-                    const tokenGenerated = jwt.sign(
-                        {username: req.body.username},
-                        process.env.TOKEN_KEY,
-                        {expiresIn: "12h"},
-                        null
-                    );
+                    const tokenGenerated = createToken(username);
 
-                    const refreshTokenGenerated = jwt.sign(
-                        {username: username},
-                        process.env.REFRESH_TOKEN_KEY,
-                        {expiresIn: "24h"},
-                        null);
+                    const refreshTokenGenerated = refreshJwtGenerated(username);
 
                     console.log("new token " + tokenGenerated);
                     console.log("new refresh token  " + refreshTokenGenerated);
@@ -129,3 +105,38 @@ exports.refreshToken = [
         }
     }
 ]
+
+exports.logout = [
+    async function logout(req, res){
+        try{
+            const username = req.body.username
+
+            const found = await Auth.findOne({username: username}).exec();
+
+            if(!found){
+                res.status(404).json({msg: "User is not logged in"});
+            }else{
+                res.status(200).json({msg: "Session ended "})
+                await Auth.deleteOne({username: found.username});
+            }
+        }catch (err){
+            res.json({msg: err})
+        }
+    }
+]
+ async function createToken(username){
+     return jwt.sign(
+         { username: username },
+         process.env.TOKEN_KEY,
+         { expiresIn: "12h" },
+         null
+     );
+}
+
+async function refreshJwtGenerated(username){
+    return jwt.sign(
+        { username: username },
+        process.env.REFRESH_TOKEN_KEY,
+        { expiresIn: "24h" },
+        null);
+}
