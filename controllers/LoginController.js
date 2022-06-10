@@ -116,7 +116,7 @@ exports.logout = [
             if(!found){
                 res.status(404).json({msg: "User is not logged in"});
             }else{
-                res.status(200).json({msg: "Session ended "})
+                res.status(200).json({msg: "User successfully logged out "})
                 await Auth.deleteOne({username: found.username});
             }
         }catch (err){
