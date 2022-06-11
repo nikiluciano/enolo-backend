@@ -134,7 +134,7 @@ exports.logout = [
      return jwt.sign(
          { username: username },
          process.env.TOKEN_KEY,
-         { expiresIn: "12h" },
+         {expiresIn: "12h"},
          null
      );
 }
