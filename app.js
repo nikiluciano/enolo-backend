@@ -6,8 +6,8 @@ const cors = require("cors");
 const auth = require("./middlewares/Auth");
 
 const supplierRoute = require("./routes/SupplierRoute");
-const login = require("./routes/Login");
-const signUp = require('./routes/SignUp');
+const login = require("./routes/AuthRoute");
+const signUp = require('./routes/SignUpRoute');
 const wineConfermentRoute = require("./routes/WineConfermentRoute");
 const warehouseRoute = require("./routes/WarehouseRoute");
 const userRoute = require("./routes/UserRoute");
@@ -26,8 +26,8 @@ app.use(cors());
 app.use(login);
 app.use(signUp);
 app.use("/suppliers", supplierRoute);
-app.use(wineConfermentRoute);
-app.use("/statistics",statisticsRoute);
+app.use("/wine_conferment", wineConfermentRoute);
+app.use("/statistics", statisticsRoute);
 app.use("/users", userRoute);
 app.use("/warehouse", warehouseRoute);
 
