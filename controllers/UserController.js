@@ -9,7 +9,7 @@ exports.getAllUsers = [
 
             res.status(200).json(users);
         } catch (err) {
-            res.status(400).json({msg: "Cannot get all users"})
+            res.status(400).json({msg: "Impossibile ottenere tutti gli utenti"})
         }
     }];
 
@@ -19,7 +19,7 @@ exports.getOneUser = [
             const found = await userModel.findOne({username: req.params.username});
 
             if (!found) {
-                res.status(404).json({msg: "There is no users with this username"});
+                res.status(404).json({msg: "Non ci sono utenti con questo nome utente"});
             } else {
                 found["password"] = undefined
 
@@ -28,7 +28,7 @@ exports.getOneUser = [
                 res.status(200).json(found);
             }
         } catch (err) {
-            res.status(400).json({msg: "Incorrect username"});
+            res.status(400).json({msg: "Nome utente sbagliato"});
         }
     }];
 
@@ -38,13 +38,13 @@ exports.updateRole = [
             const found = await userModel.findOne({username: req.body.username});
 
             if (!found) {
-                res.status(404).json({msg: "There is no users with this username"});
+                res.status(404).json({msg: "Non ci sono utenti con questo nome utente"});
             } else {
 
                 if(req.body.role === "WORKER" || req.body.role === "ADMIN") {
 
                     if (req.body.role === found.role) {
-                        res.status(400).json({msg: "This user is already " + req.body.role});
+                        res.status(400).json({msg: "Questo utente è già " + req.body.role});
                         return
                     }
 
@@ -56,9 +56,9 @@ exports.updateRole = [
                             }
                         });
 
-                    res.status(200).json({msg: "Role changed successfully"});
+                    res.status(200).json({msg: "Ruolo cambiato con successo"});
                 } else {
-                    res.status(400).json( {msg: "Invalid input role"} );
+                    res.status(400).json( {msg: "Ruolo non valido"} );
                     return
                 }
             }
@@ -74,7 +74,7 @@ exports.patchUser = [
             const found = await userModel.findOne({username: req.params.username});
 
             if(!found){
-                res.status(404).json({msg: "There is no users with this username"});
+                res.status(404).json({msg: "Non ci sono utenti con questo nome utente"});
             } else {
 
                 await userModel.updateOne(
@@ -89,7 +89,7 @@ exports.patchUser = [
                         }
                     });
 
-                res.status(200).json({msg: "User updated successfully"});
+                res.status(200).json({msg: "Utent aggiornato con successo"});
             }
         } catch (err) {
             res.status(400).json({msg:err.toString() });
@@ -103,16 +103,16 @@ exports.deleteUser = [
         const loggedUser = await userModel.findOne({username: req.params.username});
 
         if (!found) {
-            res.status(404).json({msg: "There is no users with this username"});
+            res.status(404).json({msg: "Non ci sono utenti con questo nome utente"});
         } else {
             if (found.username === loggedUser.username) {
-                res.status(400).json({msg: "You can't delete your account"});
+                res.status(400).json({msg: "Non puoi cancellare il tuo stesso account"});
                 return
             }
 
             await userModel.deleteOne({username: found.username})
 
-            res.status(200).json({msg: "User deleted successfully"});
+            res.status(200).json({msg: "Utente eliminato con successo"});
         }
     } catch  (err) {
         res.status(400).json({msg:err.toString() });

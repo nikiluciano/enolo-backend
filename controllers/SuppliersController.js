@@ -17,7 +17,7 @@ exports.insertSupplier = [
         const found = await supplier.findOne({username: req.body.username}).exec();
 
         if(found) {
-            res.status(409).json({msg: "This supplier already exists"});
+            res.status(409).json({msg: "Fornitore già presente nel database"});
         } else {
             try {
                 await newSupplier.save();
@@ -36,7 +36,7 @@ exports.updateSupplier = [
         const found = await supplier.findById(_idReq);
 
         if(!found){
-            res.status(404).json({msg:"Couldn't get the supplier"});
+            res.status(404).json({msg:"Impossibile ottenere il fornitore"});
         } else {
 
             await supplier.updateOne(
@@ -53,10 +53,10 @@ exports.updateSupplier = [
                     }
                 });
 
-            res.status(200).json({msg: "Supplier updated successfully"});
+            res.status(200).json({msg: "Fornitore aggiornato con successi"});
         }
     } catch (err) {
-        res.status(404).json({msg: "Incorrect id"});
+        res.status(404).json({msg: "ID sbagliato"});
     }
 }];
 
@@ -67,7 +67,7 @@ exports.getAllSuppliers = [
             const suppliers = await supplier.find();
             res.status(200).json(suppliers);
         } catch (err) {
-            res.status(400).json({ msg:"Couldn't get all suppliers" });
+            res.status(400).json({ msg:"Impossibile ottenere il fornitore" });
         }
 }];
 
@@ -79,11 +79,11 @@ exports.getOneSupplier = [
         const found = await supplier.findById(_idReq);
 
         if (!found) {
-            res.status(404).json({msg:"Couldn't get the supplier"});
+            res.status(404).json({msg:"Impossibile ottenere il fornitore"});
         } else {
             res.status(200).json(found);
         }
     } catch (err) {
-        res.status(404).json({msg: "Incorrect id"});
+        res.status(404).json({msg: "ID sbagliato"});
     }
 }];

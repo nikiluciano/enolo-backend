@@ -13,7 +13,7 @@ exports.login = [
         try {
             // Validate user input
             if (!(username && password)) {
-                res.status(400).json( {msg: "Email and password should not be empty"} );
+                res.status(400).json( {msg: "Email e password non possono essere vuote"} );
                 return
             }
 
@@ -54,7 +54,7 @@ exports.login = [
 
                 res.status(200).json(response);
             } else {
-                res.status(400).json( {msg: "The email or password you entered is incorrect"} );
+                res.status(400).json( {msg: "Email o password sbagliate"} );
             }
 
         } catch (err) {
@@ -71,7 +71,7 @@ exports.refreshToken = [
             const found = await Auth.findOne({username: username}).exec();
 
             if (!found){
-                res.status(404).json({msg: "Token not present into database"});
+                res.status(404).json({msg: "Token non presente nel Database"});
             } else {
                 if(refreshToken === found.refreshToken) {
                     const tokenGenerated = await createToken(username);
@@ -92,7 +92,7 @@ exports.refreshToken = [
                         refreshToken: refreshTokenGenerated
                     })
                 } else {
-                    res.status(404).json({msg: "Refresh token incorrect"});
+                    res.status(404).json({msg: "Refresh del token sbagliato"});
                 }
             }
         } catch (err) {
@@ -109,10 +109,10 @@ exports.logout = [
             const found = await Auth.findOne({username: username}).exec();
 
             if(!found){
-                res.status(404).json({msg: "User is not logged in"});
+                res.status(404).json({msg: "Utente non loggato"});
             } else {
                 await Auth.deleteOne({username: found.username});
-                res.status(200).json({msg: "User successfully logged out "})
+                res.status(200).json({msg: "User disconnesso con successo "})
             }
         } catch (err) {
             res.json({msg: err})

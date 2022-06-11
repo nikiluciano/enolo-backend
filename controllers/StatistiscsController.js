@@ -14,7 +14,7 @@ exports.getStatsSupplierQuantity = [
                 }])
             res.status(200).json(sum);
         } catch {
-            res.status(400).json({msg: "Couldn't get all wine conferment"});
+            res.status(400).json({msg: "Impossibile completare l'operazione"});
         }
 }];
 
@@ -32,7 +32,7 @@ exports.getStatsTypologyQuantity = [
                 }])
             res.status(200).json(sum);
         } catch {
-            res.status(400).json({msg: "Couldn't get all wine conferment"});
+            res.status(400).json({msg: "Impossibile completare l'operazione"});
         }
 }];
 
@@ -59,6 +59,6 @@ exports.getStatsWaste = [
             res.status(200).json(waste[0]);
 
         } catch {
-            res.status(400).json({msg: "Couldn't get waste"});
+            res.status(400).json({msg: "Errore nell'ottenimento dello scarto o scarto non presente nel conferimento corrente"});
         }
 }];

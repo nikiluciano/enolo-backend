@@ -13,7 +13,7 @@ module.exports = async function registerUser(req,res) {
     const roleReq = "WORKER"
 
     if(passwordReq === ""){
-        res.status(404).json( {msg:"Password field should not be empty"} );
+        res.status(404).json( {msg:"Il campo password non può essere vuoto "} );
         return
     }
 
@@ -34,7 +34,7 @@ module.exports = async function registerUser(req,res) {
   
     if(found) {
         res.status(409);
-        res.json( {msg:"This account already exists"} );
+        res.json( {msg:"Account già esistente"} );
     } else {
         try {
             const savedUser = await newUser.save();

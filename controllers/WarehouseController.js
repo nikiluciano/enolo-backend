@@ -43,15 +43,15 @@ exports.postWarehouse = [
                 const warehouse = await insertIntoWarehouse(req, res)
 
                 if(warehouse === null){
-                    res.status(400).json({msg: "Quantities should be greater than -1!"});
+                    res.status(400).json({msg: "La quantità deve avere un valore superiore a -1"});
                     return
                 }
 
                 await warehouse.save()
 
-                res.status(200).json({msg: "Warehouse succesfully created!"});
+                res.status(200).json({msg: "Magazzino creato con successo!"});
             } else {
-                res.status(400).json({msg: "Warehouse already created! Update it with PATCH function!"});
+                res.status(400).json({msg: "Magazzino già presente! Aggiornalo utilizzando la PATCH!"});
             }
 
         } catch(err) {
@@ -95,12 +95,12 @@ exports.addFormat = [
 
                     await warehouseModel.updateOne({}, warehouse)
 
-                    res.status(200).json({msg: "New format added to warehouse"});
+                    res.status(200).json({msg: "Nuovo formato aggiunto nel magazzino"});
                 } else {
-                    res.status(400).json({msg: "Format already present"});
+                    res.status(400).json({msg: "Formato già presente nel magazzino"});
                 }
             } else {
-                res.status(400).json({msg: "Warehouse not created yet!"});
+                res.status(400).json({msg: "Il magazzino deve essere ancora creato!"});
             }
         } catch(err) {
             res.status(400).json({msg: err.toString()})
@@ -134,12 +134,12 @@ exports.patchFormat = [
 
                     await warehouseModel.updateOne({}, warehouse)
 
-                    res.status(200).json({msg: "Format " + warehouse.bottles.formats[i].format + " updated successfully!"});
+                    res.status(200).json({msg: "Formato " + warehouse.bottles.formats[i].format + " aggiornato con successo!"});
                 } else {
-                    res.status(400).json({msg: "Format not present"});
+                    res.status(400).json({msg: "Formato non presente"});
                 }
             } else {
-                res.status(400).json({msg: "Warehouse not created yet!"});
+                res.status(400).json({msg: "Il magazzino deve essere ancora creato!"});
             }
         } catch(err) {
             res.status(400).json({msg: err.toString()})
@@ -153,7 +153,7 @@ exports.updateCaps = [
             const found = await warehouseModel.find();
 
             if(!found){
-                res.status(400).json({msg: "Warehouse not created yet!"});
+                res.status(400).json({msg: "Il magazzino deve essere ancora creato!"});
             } else {
                 await updateQuantity(req, res, found[0], CAPS)
             }
@@ -169,7 +169,7 @@ exports.updateTags = [
             const found = await warehouseModel.find();
 
             if(!found){
-                res.status(400).json({msg: "Warehouse not created yet!"});
+                res.status(400).json({msg: "Il magazzino deve essere ancora creato!"});
             } else {
                 await updateQuantity(req, res, found[0], TAGS)
             }
@@ -189,9 +189,9 @@ async function updateQuantity(req, res, warehouse, tag){
 
         await warehouseModel.updateOne({}, warehouse)
 
-        res.status(200).json({msg: tag + " quantity updated successfully!"});
+        res.status(200).json({msg: tag + " quantità aggionata con successo!"});
     } else {
-        res.status(400).json({msg: "Quantity should be greater than 0"});
+        res.status(400).json({msg: "La quantità deve essere maggiore di 0"});
     }
 }
 

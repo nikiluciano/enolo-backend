@@ -54,7 +54,7 @@ async function valueAssignement(req, res) {
 
         return wineConferment
     } catch (e) {
-        res.status(500).json({msg: "Server error"});
+        res.status(500).json({msg: "Errore del server"});
     }
 }
 
@@ -72,10 +72,10 @@ exports.postWineConferment = [
 
                 await newWineConferment.save();
 
-                res.status(200).json({msg: "Wine Conferment inserted"});
+                res.status(200).json({msg: "Conferimento inserito con successo"});
             }else {
                 await newWineConferment.save();
-                res.status(200).json({msg: "Wine Conferment inserted"});
+                res.status(200).json({msg: "Conferimento inserito con successo"});
             }
 
         } catch (err) {
@@ -92,12 +92,12 @@ exports.getOneWineConferment = [
             const found = await wineConfermentModel.findById(_idReq);
 
             if(!found){
-                res.status(400).json({msg: "There is no wine conferment with this id"});
+                res.status(400).json({msg: "Non ci sono conferimenti con questo Id"});
             } else {
                 res.status(200).json(found);
             }
         } catch (err) {
-            res.json({msg: "Incorrect id"});
+            res.json({msg: "ID sbagliato"});
         }
 }];
 
@@ -129,7 +129,7 @@ exports.getAllWineConferment = [
 
             res.status(200).json(wineConferment);
         }catch (err){
-            res.status(400).json({msg: "Couldn't get all wine conferment"});
+            res.status(400).json({msg: "Impossibile ottenere tutti i conferimenti"});
         }
 }];
 
@@ -168,7 +168,7 @@ exports.getConfermentsByFilters = [
 
             res.status(200).json(wineConferment);
         } catch (err) {
-            res.status(400).json({msg: "Couldn't get all wine conferment"});
+            res.status(400).json({msg: "Impossibile ottenere i conferimenti richiesti"});
         }
     }
 ];
@@ -183,7 +183,7 @@ exports.deleteWineConferment = [
 
             await wineConfermentModel.findByIdAndRemove(_idReq)
 
-            res.status(200).json({msg: "Conferment deleted successfully"});
+            res.status(200).json({msg: "Conferimento eliminato con successo"});
         } catch(err){
             res.json({ message: err.toString() });
         }
@@ -225,7 +225,7 @@ exports.updateWinePressingProcess = [
             const found = await wineConfermentModel.findById(_idReq);
 
             if(!found){
-                res.status(400).json({msg: "There is no wine conferment with this id"});
+                res.status(400).json({msg: "Non ci sono conferimenti con questo Id"});
             } else {
                 found.status = "PENDING"
                 found.current_process = "wine_pressing_process"
@@ -236,10 +236,10 @@ exports.updateWinePressingProcess = [
 
                 await wineConfermentModel.findByIdAndUpdate(req.params.id, found, {new:true});
 
-                res.status(200).json({msg: "Wine pressing process updated successfully"});
+                res.status(200).json({msg: "Pressatura aggiornata con successo"});
             }
         } catch (err) {
-            res.json({msg: "Incorrect id"});
+            res.json({msg: "ID sbagliato"});
         }
     }
 ];
@@ -251,7 +251,7 @@ exports.updateDestemmingProcess = [
             const found = await wineConfermentModel.findById(_idReq);
 
             if(!found){
-                res.status(400).json({msg: "There is no wine conferment with this id"});
+                res.status(400).json({msg: "Non ci sono conferimenti con questo Id"});
             } else {
                 found.status = "PENDING"
                 found.current_process = "destemming_process"
@@ -263,10 +263,10 @@ exports.updateDestemmingProcess = [
 
                 await wineConfermentModel.findByIdAndUpdate(req.params.id, found, {new:true});
 
-                res.status(200).json({msg: "Destemming process updated successfully"});
+                res.status(200).json({msg: "Diraspatura aggiornata con successo"});
             }
         } catch (err) {
-            res.json({msg: "Incorrect id"});
+            res.json({msg: "ID sbagliato"});
         }
     }
 ];
@@ -278,7 +278,7 @@ exports.updateWinemakingProcess = [
             const _idReq = req.params.id;
             const found = await wineConfermentModel.findById(_idReq);
             if(!found){
-                res.status(400).json({msg: "There is no wine conferment with this id"});
+                res.status(400).json({msg: "Non ci sono conferimenti con questo Id"});
             } else {
                 found.status = "PENDING"
                 found.current_process = "winemaking_process"
@@ -289,10 +289,10 @@ exports.updateWinemakingProcess = [
                 }
                 await wineConfermentModel.findByIdAndUpdate(_idReq, found, {new:true});
 
-                res.status(200).json({msg: "Winemaking process updated successfully"});
+                res.status(200).json({msg: "Vinificazione aggioranta con successo"});
             }
         } catch (err) {
-            res.status(400).json({msg: "Incorrect id"});
+            res.status(400).json({msg: "ID sbagliato"});
         }
     }
 ];
@@ -304,7 +304,7 @@ exports.updateRackingProcess = [
             const found = await wineConfermentModel.findById(_idReq);
 
             if(!found){
-                res.status(400).json({msg: "There is no wine conferment with this id"});
+                res.status(400).json({msg: "Non ci sono conferimenti con questo Id"});
             } else {
                 found.status = "PENDING"
                 found.current_process = "racking_process"
@@ -315,10 +315,10 @@ exports.updateRackingProcess = [
 
                 await wineConfermentModel.findByIdAndUpdate(req.params.id, found, {new:true});
 
-                res.status(200).json({msg: "Racking process updated successfully"});
+                res.status(200).json({msg: "Svinatura aggioranta con successo"});
             }
         } catch (err) {
-            res.json({msg: "Incorrect id"});
+            res.json({msg: "ID sbagliato"});
         }
     }
 ];
@@ -330,7 +330,7 @@ exports.updateRefinementProcess = [
             const found = await wineConfermentModel.findById(_idReq);
 
             if(!found){
-                res.status(400).json({msg: "There is no wine conferment with this id"});
+                res.status(400).json({msg: "Non ci sono conferimenti con questo Id"});
             } else {
                 found.status = "PENDING"
                 found.current_process = "refinement_process"
@@ -341,10 +341,10 @@ exports.updateRefinementProcess = [
 
                 await wineConfermentModel.findByIdAndUpdate(req.params.id, found, {new:true});
 
-                res.status(200).json({msg: "Refinement process updated successfully"});
+                res.status(200).json({msg: "Raffinamento aggiornato con successo"});
             }
         } catch (err) {
-            res.json({msg: "Incorrect id"});
+            res.json({msg: "ID sbagliato"});
         }
     }
 ];
@@ -357,7 +357,7 @@ exports.updateBottlingProcess = [
             const warehouse = await warehouseModel.findOne();
 
             if(!found){
-                res.status(400).json({msg: "There is no wine conferment with this id"});
+                res.status(400).json({msg: "Non ci sono conferimenti con questo Id"});
             } else {
                 const bottlesAvailability = await checkWarehouseQuantitiesAvailability(warehouse.bottles.bottles_quantity, req.body.bottles.bottles_quantity)
                 const capsAvailability = await checkWarehouseQuantitiesAvailability(warehouse.caps_quantity, req.body.caps_quantity)
@@ -379,7 +379,7 @@ exports.updateBottlingProcess = [
                 const format = formats[i]
 
                 if(!foundFormat){
-                    res.status(400).json({msg:"Bottles with capacity " + req.body.bottles.format + " not present into warehouse"});
+                    res.status(400).json({msg:"Bottiglie con capienza " + req.body.bottles.format + " assente nel dateabase"});
                 } else {
                     if ((format.quantity >= req.body.bottles.bottles_quantity) && bottlesAvailability && capsAvailability && tagsAvailability) {
                         found.status = "READY"
@@ -404,14 +404,14 @@ exports.updateBottlingProcess = [
                         await wineConfermentModel.findByIdAndUpdate(req.params.id, found, {new: true});
                         await warehouseModel.updateOne({}, warehouse);
 
-                        res.status(200).json({msg: "Bottling process updated successfully!"})
+                        res.status(200).json({msg: "Imbottigliamento aggiornato con successo!"})
                     } else {
-                        res.status(400).json({msg: "Not enough quantity of bottles, caps and tags"});
+                        res.status(400).json({msg: "Quantità di bottiglie, tappi o etichette insufficiente nel magazzino"});
                     }
                 }
             }
         } catch (err) {
-            res.json({msg: "Incorrect id" + err});
+            res.json({msg: "ID sbagliato" + err});
         }
     }
 ];
