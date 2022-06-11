@@ -1,5 +1,6 @@
 const wineConfermentModel = require("../models/WineConferment");
 
+// This stat sums every conferment's quantity per supplier
 exports.getStatsSupplierQuantity = [
     async function getStatsSupplierQuantity(req, res) {
         try {
@@ -11,13 +12,14 @@ exports.getStatsSupplierQuantity = [
                             $sum: "$quantity"
                         }
                     }
-                }])
+                }]);
             res.status(200).json(sum);
         } catch {
             res.status(400).json({msg: "Impossibile completare l'operazione"});
         }
 }];
 
+// This stat sums every conferment's quantity per wine's typology
 exports.getStatsTypologyQuantity = [
     async function getStatsTypologyQuantity(req, res) {
         try {
@@ -29,13 +31,18 @@ exports.getStatsTypologyQuantity = [
                             $sum: "$quantity"
                         }
                     }
-                }])
+                }]);
             res.status(200).json(sum);
         } catch {
             res.status(400).json({msg: "Impossibile completare l'operazione"});
         }
 }];
 
+/* This stat returns:
+    - total waste of destemming process and wine making process;
+    - the sum of destemming waste (total) and wine making waste (total);
+    - total quantity of conferments
+ */
 exports.getStatsWaste = [
     async function getStatsWaste(req, res) {
         try {
@@ -54,7 +61,7 @@ exports.getStatsWaste = [
                         },
                        totalWaste: { $sum : {$add: [{$ifNull:['$destemming_process.waste', 0]},{$ifNull:['$winemaking_process.waste', 0]} ]} }
                     }
-                }])
+                }]);
 
             res.status(200).json(waste[0]);
 

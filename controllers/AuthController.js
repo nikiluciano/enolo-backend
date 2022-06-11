@@ -13,7 +13,7 @@ exports.login = [
         try {
             // Validate user input
             if (!(username && password)) {
-                res.status(400).json( {msg: "Email e password non possono essere vuote"} );
+                res.status(400).json({msg: "Email e password non possono essere vuote"});
                 return
             }
 
@@ -38,6 +38,13 @@ exports.login = [
                     refreshToken: refreshTokenGenerated
                 })
 
+                /** IMPORTANT:
+                 * if user is not logged in it saves newAuth object into Auth collection,
+                 * otherwise update Auth document with the same username;
+                 * Update token means that this app works on a single session: if a user is
+                 * already logged on first device , when he does the login on second device
+                 * then the session of the first device has expired.
+                 * */
                 if(!auth) {
                     await newAuth.save();
                 } else {
@@ -54,9 +61,8 @@ exports.login = [
 
                 res.status(200).json(response);
             } else {
-                res.status(400).json( {msg: "Email o password sbagliate"} );
+                res.status(400).json({msg: "Email o password sbagliate"});
             }
-
         } catch (err) {
             console.log(err);
         }
@@ -68,15 +74,17 @@ exports.refreshToken = [
             const refreshToken = req.body.refreshToken
             const username = req.body.username
 
+            // find user by username
             const found = await Auth.findOne({username: username}).exec();
 
             if (!found){
-                res.status(404).json({msg: "Token non presente nel Database"});
+                res.status(404).json({msg: "Token non presente nel database"});
             } else {
                 if(refreshToken === found.refreshToken) {
                     const tokenGenerated = await createToken(username);
                     const refreshTokenGenerated = await refreshJwtGenerated(username);
 
+                    // update user's token and refresh token; user searched by username
                     await Auth.updateOne(
                         {username: found.username},
                         {
@@ -92,7 +100,7 @@ exports.refreshToken = [
                         refreshToken: refreshTokenGenerated
                     })
                 } else {
-                    res.status(404).json({msg: "Refresh del token sbagliato"});
+                    res.status(404).json({msg: "Refresh token errato"});
                 }
             }
         } catch (err) {
@@ -106,13 +114,14 @@ exports.logout = [
         try{
             const username = req.body.username
 
+            // find user by username
             const found = await Auth.findOne({username: username}).exec();
 
             if(!found){
-                res.status(404).json({msg: "Utente non loggato"});
+                res.status(404).json({msg: "L'utente " + found.username + " non ha effettutato il login"});
             } else {
                 await Auth.deleteOne({username: found.username});
-                res.status(200).json({msg: "User disconnesso con successo "})
+                res.status(200).json({msg: "Utente disconnesso con successo"})
             }
         } catch (err) {
             res.json({msg: err})
@@ -120,6 +129,7 @@ exports.logout = [
     }
 ];
 
+// function that generates new token
  async function createToken(username){
      return jwt.sign(
          { username: username },
@@ -129,6 +139,7 @@ exports.logout = [
      );
 }
 
+// function that generates refresh token
 async function refreshJwtGenerated(username){
     return jwt.sign(
         { username: username },

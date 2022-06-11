@@ -20,6 +20,22 @@ async function insertIntoWarehouse(req, res){
     }
 }
 
+async function updateQuantity(req, res, warehouse, tag){
+    if(req.body.quantity > 0){
+        if(tag === CAPS){
+            warehouse.caps_quantity += req.body.quantity
+        } else if(tag === TAGS){
+            warehouse.tags_quantity += req.body.quantity
+        }
+
+        await warehouseModel.updateOne({}, warehouse)
+
+        res.status(200).json({msg: tag + " quantità aggionata con successo!"});
+    } else {
+        res.status(400).json({msg: "La quantità deve essere maggiore di 0"});
+    }
+}
+
 //GET method
 exports.getWarehouse = [
     async function(req, res) {
@@ -147,6 +163,7 @@ exports.patchFormat = [
     }
 ];
 
+//UPDATE caps quantity
 exports.updateCaps = [
     async function updateCaps(req, res) {
         try {
@@ -163,6 +180,7 @@ exports.updateCaps = [
     }
 ];
 
+//UPDATE tags quantity
 exports.updateTags = [
     async function updateTags(req, res) {
         try {
@@ -178,20 +196,4 @@ exports.updateTags = [
         }
     }
 ];
-
-async function updateQuantity(req, res, warehouse, tag){
-    if(req.body.quantity > 0){
-        if(tag === CAPS){
-            warehouse.caps_quantity += req.body.quantity
-        } else if(tag === TAGS){
-            warehouse.tags_quantity += req.body.quantity
-        }
-
-        await warehouseModel.updateOne({}, warehouse)
-
-        res.status(200).json({msg: tag + " quantità aggionata con successo!"});
-    } else {
-        res.status(400).json({msg: "La quantità deve essere maggiore di 0"});
-    }
-}
 

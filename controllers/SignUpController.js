@@ -3,47 +3,47 @@ const userModel = require("../models/User");
 
 exports.signup = [
     async function registerUser(req,res) {
-        //fun replace removes all white spaces
-        const passwordReq = req.body.password;
 
-        const usernameReq = req.body.username
-        const emailReq = req.body.email
-        const nameReq = req.body.name
-        const surnameReq = req.body.surname
-        const phoneReq = req.body.phone
-        const addressReq = req.body.address
-
+        /** by default when new user is registered, he is a "WORKER";
+         * Only an admin has permission to change his role into an "ADMIN" */
         const roleReq = "WORKER"
 
-        if(passwordReq === ""){
+        if(req.body.password === ""){
             res.status(400).json( {msg:"Password field should not be empty"} );
             return
         }
 
-        const encryptedPassword = await bcrypt.hash(passwordReq,10);
-        const newUser = new userModel({
-            username: usernameReq,
-            password: encryptedPassword,
-            email: emailReq,
-            name: nameReq,
-            surname: surnameReq,
-            phone: phoneReq,
-            address: addressReq,
-            role: roleReq
-        });
+        // generate encrypted password
+        const encryptedPassword = await bcrypt.hash(req.body.password,10);
 
-        const found = await userModel.findOne({username:req.body.username}).exec();
+        // find user by username
+        const found = await userModel.findOne({username: req.body.username}).exec();
+
         if(found) {
-            res.status(409);
-            res.json( {msg:"This account already exists"} );
+            res.status(409).json( {msg:"This account already exists"} );
         } else {
             try {
+                // init new user
+                const newUser = await initNewUser(req.body, encryptedPassword, roleReq)
                 const savedUser = await newUser.save();
-                res.json(savedUser);
+
+                res.status(200).json(savedUser);
             } catch (err) {
                 console.log(err)
-                res.status(400);
-                res.json( {msg: err} );
+                res.status(400).json({msg: err});
             }
         }
 }];
+
+async function initNewUser(user, pass, role){
+    return new userModel({
+        username: user.username,
+        password: pass,
+        email: user.email,
+        name: user.name,
+        surname: user.surname,
+        phone: user.phone,
+        address: user.address,
+        role: role
+    });
+}

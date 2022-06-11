@@ -17,4 +17,4 @@ const auth = mongoose.Schema({
     timestamps: {createdAt: true, updatedAt: true}
 });
 
-module.exports = mongoose.model("auth",auth);
+module.exports = mongoose.model("auth", auth);

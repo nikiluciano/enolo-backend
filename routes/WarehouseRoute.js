@@ -7,7 +7,6 @@ router.get("", auth, warehouseController.getWarehouse);
 router.post("", auth, warehouseController.postWarehouse);
 router.patch("/format", auth, warehouseController.addFormat);
 router.patch("/update_format", auth, warehouseController.patchFormat);
-//router.patch("/update_caps", auth, warehouseController.updateCaps);
 router.patch("/update_caps", auth, warehouseController.updateCaps);
 router.patch("/update_tags", auth, warehouseController.updateTags);
 

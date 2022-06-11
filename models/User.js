@@ -34,6 +34,6 @@ const user = mongoose.Schema({
       enum:["ADMIN","WORKER"],
       required:true
     }
-})
+});
 
-module.exports = mongoose.model("user",user);
+module.exports = mongoose.model("user", user);

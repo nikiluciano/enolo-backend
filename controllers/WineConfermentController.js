@@ -1,10 +1,9 @@
 const wineConfermentModel = require("../models/WineConferment");
 const warehouseModel = require("../models/Warehouse");
 const url = require('url');
-const querystring = require('querystring');
 
 //Assign value to models fields
-async function valueAssignement(req, res) {
+async function initNewConferment(req, res) {
     const wineConferment = new wineConfermentModel()
 
     try {
@@ -28,14 +27,13 @@ async function valueAssignement(req, res) {
         if(req.body.destemmig_process != null){
             wineConferment.current_process = "destemmig_process"
             wineConferment.destemmig_process = req.body.destemmig_process
-
         }
 
         if(req.body.winemaking_process != null){
             wineConferment.current_process = "winemaking_process"
             wineConferment.winemaking_process = req.body.winemaking_process
-
         }
+
         if(req.body.racking_process != null){
             wineConferment.current_process = "racking_process"
             wineConferment.racking_process = req.body.racking_process
@@ -58,17 +56,19 @@ async function valueAssignement(req, res) {
     }
 }
 
-//Post method
+async function checkWarehouseQuantitiesAvailability(available, request) {
+    return (available - request) >= 0;
+}
+
+// CREATE a conferment
 exports.postWineConferment = [
     async function postWineConferment(req, res) {
 
-        const newWineConferment = await valueAssignement(req, res)
+        const newWineConferment = await initNewConferment(req, res)
 
         try {
             if(newWineConferment.date == null){
-                const dateNow = Date.now();
-
-                newWineConferment.date = dateNow;
+                newWineConferment.date = Date.now();
 
                 await newWineConferment.save();
 
@@ -84,7 +84,7 @@ exports.postWineConferment = [
         }
 }];
 
-// Get one conferment method
+// GET one conferment
 exports.getOneWineConferment = [
     async function getOneWineConferment(req, res) {
         try{
@@ -102,7 +102,7 @@ exports.getOneWineConferment = [
 }];
 
 
-//get all conferment method
+// GET ALL conferments
 exports.getAllWineConferment = [
     async function getAllWineConferment(req, res){
         try{
@@ -114,6 +114,7 @@ exports.getAllWineConferment = [
         }
 }];
 
+// GET ALL conferments by filters (status, supplier, typology, sort)
 exports.getConfermentsByFilters = [
     async function getConfermentsByFilters(req, res){
         try{
@@ -130,13 +131,9 @@ exports.getConfermentsByFilters = [
                 typology: typology
             }
 
-            console.log(filter);
-
             if(status === undefined) delete filter.status
             if(supplier === undefined) delete filter.supplier
             if(typology === undefined) delete filter.typology
-
-            console.log(filter);
 
             // if sort is undefined, default value is -1
             if(sort === undefined){
@@ -154,7 +151,7 @@ exports.getConfermentsByFilters = [
     }
 ];
 
-//delete conferment method
+// DELETE conferment
 exports.deleteWineConferment = [
     async function (req, res){
         try{
@@ -171,7 +168,6 @@ exports.deleteWineConferment = [
 }];
 
 /** PATCH processes */
-
 exports.updateWinePressingProcess = [
     async function winePressingProcess (req,res) {
         try{
@@ -179,7 +175,7 @@ exports.updateWinePressingProcess = [
             const found = await wineConfermentModel.findById(_idReq);
 
             if(!found){
-                res.status(400).json({msg: "Non ci sono conferimenti con questo Id"});
+                res.status(400).json({msg: "Non ci sono conferimenti con questo ID"});
             } else {
                 found.status = "PENDING"
                 found.current_process = "wine_pressing_process"
@@ -205,7 +201,7 @@ exports.updateDestemmingProcess = [
             const found = await wineConfermentModel.findById(_idReq);
 
             if(!found){
-                res.status(400).json({msg: "Non ci sono conferimenti con questo Id"});
+                res.status(400).json({msg: "Non ci sono conferimenti con questo ID"});
             } else {
                 found.status = "PENDING"
                 found.current_process = "destemming_process"
@@ -232,7 +228,7 @@ exports.updateWinemakingProcess = [
             const _idReq = req.params.id;
             const found = await wineConfermentModel.findById(_idReq);
             if(!found){
-                res.status(400).json({msg: "Non ci sono conferimenti con questo Id"});
+                res.status(400).json({msg: "Non ci sono conferimenti con questo ID"});
             } else {
                 found.status = "PENDING"
                 found.current_process = "winemaking_process"
@@ -243,7 +239,7 @@ exports.updateWinemakingProcess = [
                 }
                 await wineConfermentModel.findByIdAndUpdate(_idReq, found, {new:true});
 
-                res.status(200).json({msg: "Vinificazione aggioranta con successo"});
+                res.status(200).json({msg: "Vinificazione aggiornata con successo"});
             }
         } catch (err) {
             res.status(400).json({msg: "ID sbagliato"});
@@ -258,7 +254,7 @@ exports.updateRackingProcess = [
             const found = await wineConfermentModel.findById(_idReq);
 
             if(!found){
-                res.status(400).json({msg: "Non ci sono conferimenti con questo Id"});
+                res.status(400).json({msg: "Non ci sono conferimenti con questo ID"});
             } else {
                 found.status = "PENDING"
                 found.current_process = "racking_process"
@@ -269,7 +265,7 @@ exports.updateRackingProcess = [
 
                 await wineConfermentModel.findByIdAndUpdate(req.params.id, found, {new:true});
 
-                res.status(200).json({msg: "Svinatura aggioranta con successo"});
+                res.status(200).json({msg: "Svinatura aggiornata con successo"});
             }
         } catch (err) {
             res.json({msg: "ID sbagliato"});
@@ -284,7 +280,7 @@ exports.updateRefinementProcess = [
             const found = await wineConfermentModel.findById(_idReq);
 
             if(!found){
-                res.status(400).json({msg: "Non ci sono conferimenti con questo Id"});
+                res.status(400).json({msg: "Non ci sono conferimenti con questo ID"});
             } else {
                 found.status = "PENDING"
                 found.current_process = "refinement_process"
@@ -311,11 +307,25 @@ exports.updateBottlingProcess = [
             const warehouse = await warehouseModel.findOne();
 
             if(!found){
-                res.status(400).json({msg: "Non ci sono conferimenti con questo Id"});
+                res.status(400).json({msg: "Non ci sono conferimenti con questo ID"});
             } else {
-                const bottlesAvailability = await checkWarehouseQuantitiesAvailability(warehouse.bottles.bottles_quantity, req.body.bottles.bottles_quantity)
-                const capsAvailability = await checkWarehouseQuantitiesAvailability(warehouse.caps_quantity, req.body.caps_quantity)
-                const tagsAvailability = await checkWarehouseQuantitiesAvailability(warehouse.tags_quantity, req.body.tags_quantity)
+                // checks bottles availability into watehouse
+                const bottlesAvailability = await checkWarehouseQuantitiesAvailability(
+                    warehouse.bottles.bottles_quantity,
+                    req.body.bottles.bottles_quantity
+                )
+
+                // checks caps availability into watehouse
+                const capsAvailability = await checkWarehouseQuantitiesAvailability(
+                    warehouse.caps_quantity,
+                    req.body.caps_quantity
+                )
+
+                // checks tags availability into watehouse
+                const tagsAvailability = await checkWarehouseQuantitiesAvailability(
+                    warehouse.tags_quantity,
+                    req.body.tags_quantity
+                )
 
                 const formats = warehouse.bottles.formats
 
@@ -333,20 +343,20 @@ exports.updateBottlingProcess = [
                 const format = formats[i]
 
                 if(!foundFormat){
-                    res.status(400).json({msg:"Bottiglie con capienza " + req.body.bottles.format + " assente nel dateabase"});
+                    res.status(400).json({msg:"Bottiglie con capienza " + req.body.bottles.format + " non presenti nel dateabase"});
                 } else {
                     if ((format.quantity >= req.body.bottles.bottles_quantity) && bottlesAvailability && capsAvailability && tagsAvailability) {
                         found.status = "READY"
                         found.current_process = "bottling_process"
 
-                        // conferment update
+                        // conferment model update
                         found.bottling_process = {
                             bottles: req.body.bottles,
                             caps_quantity: req.body.caps_quantity,
                             tags_quantity: req.body.tags_quantity
                         }
 
-                        // warehouse update
+                        // warehouse model update
                         warehouse.bottles.bottles_quantity -= req.body.bottles.bottles_quantity
                         warehouse.caps_quantity -= req.body.caps_quantity
                         warehouse.tags_quantity -= req.body.tags_quantity
@@ -355,8 +365,8 @@ exports.updateBottlingProcess = [
 
                         warehouse.bottles.formats[i] = format
 
-                        await wineConfermentModel.findByIdAndUpdate(req.params.id, found, {new: true});
-                        await warehouseModel.updateOne({}, warehouse);
+                        await wineConfermentModel.findByIdAndUpdate(req.params.id, found, {new: true}); // conferment update
+                        await warehouseModel.updateOne({}, warehouse); // warehouse update
 
                         res.status(200).json({msg: "Imbottigliamento aggiornato con successo!"})
                     } else {
@@ -369,7 +379,3 @@ exports.updateBottlingProcess = [
         }
     }
 ];
-
-async function checkWarehouseQuantitiesAvailability(available, request) {
-    return (available - request) >= 0;
-}
