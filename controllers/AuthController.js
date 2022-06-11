@@ -5,7 +5,8 @@ const Auth = require("../models/Auth");
 
 exports.login = [
     async function login(req, res) {
-    // Get user input req
+
+        // Get user input req
         const username = req.body.username;
         const password = req.body.password;
 
