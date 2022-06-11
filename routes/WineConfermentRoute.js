@@ -4,16 +4,18 @@ const auth = require("../middlewares/Auth")
 const admin= require("../middlewares/AdminAuth")
 const wineConfermentController = require("../controllers/WineConfermentController");
 
-router.get("/wineConferment/:id",auth,  wineConfermentController.getOneWineConferment);
-router.patch("/wineConferment/bottlingProcess/:id",auth, wineConfermentController.updateBottlingProcess);
-router.patch("/wineConferment/winePressingProcess/:id",auth, wineConfermentController.updateWinePressingProcess);
-router.patch("/wineConferment/destemmingProcess/:id",auth, wineConfermentController.updateDestemmingProcess);
-router.patch("/wineConferment/winemakingProcess/:id",auth, wineConfermentController.updateWinemakingProcess);
-router.patch("/wineConferment/rackingProcess/:id",auth, wineConfermentController.updateRackingProcess);
-router.patch("/wineConferment/refinementProcess/:id",auth, wineConfermentController.updateRefinementProcess);
-router.get("/wineConferment",auth, wineConfermentController.getAllWineConferment);
-router.get("/wineConferments/filters", auth, wineConfermentController.getConfermentsByFilters);
-router.post("/wineConferment",auth,  wineConfermentController.postWineConferment);
-router.delete("/wineConferment/:username", auth, admin, wineConfermentController.deleteWineConferment); // "username" in path is logged user
+router.use(auth);
+
+router.get("/:id", wineConfermentController.getOneWineConferment);
+router.patch("/bottling_process/:id", wineConfermentController.updateBottlingProcess);
+router.patch("/wine_pressing_process/:id", wineConfermentController.updateWinePressingProcess);
+router.patch("/destemming_process/:id", wineConfermentController.updateDestemmingProcess);
+router.patch("/wine_making_process/:id", wineConfermentController.updateWinemakingProcess);
+router.patch("/racking_process/:id", wineConfermentController.updateRackingProcess);
+router.patch("/refinement_process/:id", wineConfermentController.updateRefinementProcess);
+router.get("", wineConfermentController.getAllWineConferment);
+router.get("/filters", wineConfermentController.getConfermentsByFilters);
+router.post("", wineConfermentController.postWineConferment);
+router.delete("/:username", admin, wineConfermentController.deleteWineConferment); // "username" in path is logged user
 
 module.exports = router;

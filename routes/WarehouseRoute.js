@@ -6,9 +6,9 @@ const warehouseController = require("../controllers/WarehouseController");
 router.get("", auth, warehouseController.getWarehouse);
 router.post("", auth, warehouseController.postWarehouse);
 router.patch("/format", auth, warehouseController.addFormat);
-router.patch("/updateFormat", auth, warehouseController.patchFormat);
-router.patch("/updateCaps", auth, warehouseController.updateCaps);
-router.patch("/updateCaps", auth, warehouseController.updateCaps);
-router.patch("/updateTags", auth, warehouseController.updateTags);
+router.patch("/update_format", auth, warehouseController.patchFormat);
+//router.patch("/update_caps", auth, warehouseController.updateCaps);
+router.patch("/update_caps", auth, warehouseController.updateCaps);
+router.patch("/update_tags", auth, warehouseController.updateTags);
 
 module.exports = router

@@ -22,9 +22,7 @@ exports.login = [
 
             if (user  && (await bcrypt.compare(password, user.password))) {
 
-                // Create token
                 const tokenGenerated =  await createToken(username)
-
                 const refreshTokenGenerated = await refreshJwtGenerated(username)
 
                 const response = {
@@ -75,12 +73,8 @@ exports.refreshToken = [
                 res.status(404).json({msg: "Token not present into database"});
             } else {
                 if(refreshToken === found.refreshToken) {
-                    const tokenGenerated = createToken(username);
-
-                    const refreshTokenGenerated = refreshJwtGenerated(username);
-
-                    console.log("new token " + tokenGenerated);
-                    console.log("new refresh token  " + refreshTokenGenerated);
+                    const tokenGenerated = await createToken(username);
+                    const refreshTokenGenerated = await refreshJwtGenerated(username);
 
                     await Auth.updateOne(
                         {username: found.username},
@@ -115,15 +109,16 @@ exports.logout = [
 
             if(!found){
                 res.status(404).json({msg: "User is not logged in"});
-            }else{
-                res.status(200).json({msg: "User successfully logged out "})
+            } else {
                 await Auth.deleteOne({username: found.username});
+                res.status(200).json({msg: "User successfully logged out "})
             }
-        }catch (err){
+        } catch (err) {
             res.json({msg: err})
         }
     }
-]
+];
+
  async function createToken(username){
      return jwt.sign(
          { username: username },
