@@ -101,25 +101,6 @@ exports.getOneWineConferment = [
         }
 }];
 
-/*
-//patch method updating conferment by id
-exports.updateWineConferment = [
-    async function updateWineConferment (req,res) {
-    try{
-        const _idReq = req.params.id;
-        const found = await wineConfermentModel.findById(_idReq);
-
-        if(!found){
-            res.status(400).json({msg: "There is no wine conferment with this id"});
-        } else {
-            await wineConfermentModel.findByIdAndUpdate(req.params.id, req.body, {new:true});
-            res.status(200).json({msg: "wine conferment updated successfully"});
-        }
-    }catch (err) {
-        res.json({msg: "incorrect id"});
-    }
-}];
- */
 
 //get all conferment method
 exports.getAllWineConferment = [
@@ -190,33 +171,6 @@ exports.deleteWineConferment = [
 }];
 
 /** PATCH processes */
-/*
-exports.updateConfermentProcess = [
-    async function confermentProcess (req,res) {
-        try{
-            const _idReq = req.params.id;
-            const found = await wineConfermentModel.findById(_idReq);
-
-            if(!found){
-                res.status(400).json({msg: "There is no wine conferment with this id"});
-            } else {
-                found.status = "PENDING"
-
-                found.conferment_process = {
-                    quantity: req.body.quantity,
-                    description: req.body.description
-                }
-
-                await wineConfermentModel.findByIdAndUpdate(req.params.id, found, {new:true});
-
-                res.status(200).json({msg: "Conferment process updated successfully"});
-            }
-        } catch (err) {
-            res.json({msg: "Incorrect id"});
-        }
-    }
-];
- */
 
 exports.updateWinePressingProcess = [
     async function winePressingProcess (req,res) {

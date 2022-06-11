@@ -195,35 +195,3 @@ async function updateQuantity(req, res, warehouse, tag){
     }
 }
 
-/*
-//UPDATE method
-exports.updateWarehouse = [
-    async function updateWarehouse(req, res) {
-        try {
-            const found = await warehouseModel.find();
-
-            if(!found){
-                res.status(400).json({msg: "Warehouse not created yet!"});
-            } else {
-                const warehouse = await insertIntoWarehouse(req, res);
-
-                if(warehouse === null){
-                    res.status(400).json({msg: "Quantities should be greater than -1!"});
-                } else {
-                   await warehouseModel.updateOne(
-                        { $set: {
-
-                            bottles: warehouse.bottles,
-                            caps_quantity: warehouse.caps_quantity,
-                            tags_quantity: warehouse.tags_quantity }
-                        });
-
-                    res.status(200).json({msg: "Warehouse updated successfully!"});
-                }
-            }
-        } catch (err) {
-            res.json({msg: err});
-        }
-    }
-];
- */
