@@ -1,0 +1,994 @@
+{
+	"info": {
+		"_postman_id": "b44db0fd-cc78-4145-83d7-ea145eb52352",
+		"name": "enolo_backend",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "13577983"
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Login",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\":\"simtape\",\n    \"password\":\"password\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/login",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Signup",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\":\"xelanac\",\n    \"password\":\"password\",\n    \"name\":\"Alessadro\",\n    \"surname\":\"Cancelliere\",\n    \"phone\":\"34234523\",\n    \"email\":\"nothig@nothing.it\",\n    \"address\":\"via 24 maggio\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/signup",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"signup"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Refresh token",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"simtape\",\n    \"expiredToken\":\"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InNpbXRhcGUiLCJpYXQiOjE2NTQ5NDQ5MTQsImV4cCI6MTY1NDk4ODExNH0.MLs_-0_xFQTc42f583uE3LCTdtx1xmsO5tKd_EdcGAA\",\n    \"refreshToken\":\"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InNpbXRhcGUiLCJpYXQiOjE2NTQ5NDQ5MTQsImV4cCI6MTY1NTAzMTMxNH0.cR_DS1e2GdqWIT5b7gtBDCAJZSOgktpPILxQyc3L7UI\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/refresh_token",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"refresh_token"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Logout",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\":\"simtape\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/logout",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"logout"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Wine Conferment",
+			"item": [
+				{
+					"name": "Get all conferments",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/wine_conferment",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"wine_conferment"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get conferment by id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/wine_conferment/:id",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"wine_conferment",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "62a64c3387d1fa8d4b9d4528"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "1.Update wine pressing process",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"description\": \"description\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/wine_conferment/wine_pressing_process/:id",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"wine_conferment",
+								"wine_pressing_process",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "62a64c3387d1fa8d4b9d4528"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "2.Update destemming process",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"waste\": 150,\r\n    \"description\": \"description\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/wine_conferment/destemming_process/:id",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"wine_conferment",
+								"destemming_process",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "62a64c3387d1fa8d4b9d4528"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "3.Update winemaking process",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"waste\": 150,\r\n    \"description\": \"description\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/wine_conferment/wine_making_process/:id",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"wine_conferment",
+								"wine_making_process",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "62a64c3387d1fa8d4b9d4528"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "4.Update racking process",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"description\": \"description\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/wine_conferment/racking_process/:id",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"wine_conferment",
+								"racking_process",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "62a64c3387d1fa8d4b9d4528"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "5.Update refinement process",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"description\": \"description\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/wine_conferment/refinement_process/:id",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"wine_conferment",
+								"refinement_process",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "62a64c3387d1fa8d4b9d4528"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "6.Update bottling process",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"bottles\": {\n        \"bottles_quantity\":1,\n        \"format\":\"0.75L\"\n    },\n    \"caps_quantity\":5,\n    \"tags_quantity\":0\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/wine_conferment/bottling_process/:id",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"wine_conferment",
+								"bottling_process",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "62a64c3387d1fa8d4b9d4528"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Insert conferment",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n        \"country\": \"Spagna\",\n        \"supplier\": \"supplier_4\",\n        \"description\": \"Nuovo conferimento\",\n        \"typology\": \"Vino di Francia\",\n        \"origin\": \"Francia\",\n        \"_idworker\": \"121\",\n        \"quantity\": 1000\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/wine_conferment",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"wine_conferment"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete conferment",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\":\"629a113ab03c395af3b72bd0\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/wine_conferment/:username",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"wine_conferment",
+								":username"
+							],
+							"variable": [
+								{
+									"key": "username",
+									"value": "simtape"
+								}
+							]
+						},
+						"description": "*   Il parametro che viene passato nell'url serve per trovare l'utente loggato e per verificare il suo ruolo; se è un ADMIN può eliminare un conferimento, se è un WORKER non può eliminarlo;\n*   Il parametro id passato nel body di richiesta serve per trovare il carico da eliminare;"
+					},
+					"response": []
+				},
+				{
+					"name": "Get conferments by filters",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/wine_conferments/filters?status=READY&supplier=Fausto Fassano&typology=Tintilia&sort=-1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"wine_conferments",
+								"filters"
+							],
+							"query": [
+								{
+									"key": "status",
+									"value": "READY"
+								},
+								{
+									"key": "supplier",
+									"value": "Fausto Fassano"
+								},
+								{
+									"key": "typology",
+									"value": "Tintilia"
+								},
+								{
+									"key": "sort",
+									"value": "-1"
+								}
+							]
+						},
+						"description": "*   Il campo sort può essere vuoto; di default restituisce i conferimenti in ordine decrescente, dall'ultimo inserito al primo;\n*   Il filtro sullo \"status\" può essere READY, DELIVERED, PENDING;\n*   Se i filtri non sono validi o la query non trova almeno un conferimento, l'api restituisce un array vuoto;"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Warehouse",
+			"item": [
+				{
+					"name": "Get warehouse",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/warehouse",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"warehouse"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Warehouse",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"bottles\":{\n        \"bottles_quantity\":0,\n        \"formats\":[\n            {\n                \"format\":\"1L\",\n                \"quantity\":0,\n                \"description\":\"first format\"\n            }\n        ]\n    },\n    \"caps_quantity\":0,\n    \"tags_quantity\":0\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/warehouse",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"warehouse"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add new bottle format",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InhlbGFuYWMiLCJpYXQiOjE2NTM1OTI0ODcsImV4cCI6MTY1MzYzNTY4N30.PPqSttb7MAVoM__zyLkrRQFKovaB3492uOPmCL7EifI",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"format\":\"0.33L\",\n    \"quantity\":5,\n    \"description\":\"4th format\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/warehouse/format",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"warehouse",
+								"format"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update quantity format",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"format\":\"3.5L\",\n    \"quantity\":20\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/warehouse/update_format",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"warehouse",
+								"update_format"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update caps quantity",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"quantity\": 10\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/warehouse/update_caps",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"warehouse",
+								"update_caps"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update tags quantity",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"quantity\": 10\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/warehouse/update_tags",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"warehouse",
+								"update_tags"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Supplier",
+			"item": [
+				{
+					"name": "Get supplier by id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/suppliers/:id",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"suppliers",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "627393162d00657ea4bb1261"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update supplier",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "\r\n{\r\n    \"username\":\"marco_rossi\",\r\n    \"email\":\"marco_rossi@enolo.com\",\r\n    \"name\":\"Marco\",\r\n    \"surname\":\"Rossi\",\r\n    \"phone\":\"123321456654\",\r\n    \"address\":\"via niente\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/suppliers/:id",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"suppliers",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "627393162d00657ea4bb1261"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all suppliers",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/suppliers",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"suppliers"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Insert new supplier",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"username\":\"luca_red\",\r\n  \"name\":\"Luca\",\r\n  \"surname\":\"Rossi\",\r\n  \"phone\":\"123123123\",\r\n  \"email\":\"luca_red@enolo.com\",\r\n  \"address\":\"via nulla\",\r\n  \"company\":\"enolo project\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/suppliers",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"suppliers"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "Get user",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/users/:username",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users",
+								":username"
+							],
+							"variable": [
+								{
+									"key": "username",
+									"value": "simtape"
+								}
+							]
+						},
+						"description": "*   La ricerca avviene non per \"id\" ma per \"username\"; il parametro va passato nell'url;\n*   Per questioni di sicurezza nell'oggetto non viene restituita la password criptata;"
+					},
+					"response": []
+				},
+				{
+					"name": "Get all users",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/users",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update user role",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\":\"xelanac\",\n    \"role\": \"ADMIN\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/users/role/:username",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users",
+								"role",
+								":username"
+							],
+							"variable": [
+								{
+									"key": "username",
+									"value": "simtape"
+								}
+							]
+						},
+						"description": "*   Il parametro \"username\" passato nell'url serve per verificare se l'utente loggato ha un ruolo di ADMIN o WORKER; quindi va passato lo username dell'utente loggato. SOLO SE SI E' ADMIN E' POSSIBILE MODIFICARE IL RUOLO.\n*   Il campo username nel body serve per la ricerca dell'utente di cui si vuole modificare il ruolo;\n*   Il campo \"role\" del body server per definire il ruolo dell'utente (WORKER o ADMIN);"
+					},
+					"response": []
+				},
+				{
+					"name": "Update user",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Simone\",\n    \"surname\": \"Cassetta\",\n    \"email\": \"simo.cassetta@enolo.com\",\n    \"phone\": \"123456789\",\n    \"address\": \"via nada\"\n}\n\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/users/:username",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users",
+								":username"
+							],
+							"variable": [
+								{
+									"key": "username",
+									"value": "simtape"
+								}
+							]
+						},
+						"description": "*   La ricerca avviene non per \"id\" ma per \"username\"; il parametro va passato nell'url;\n    \n\n*   Da questa chiamata non è possibile modificare la password e lo username;\n*   Un utente, nel momento in cui si iscrive con uno username, non può più cambiarlo!"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete user",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\":\"manuel99\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/users/:username",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users",
+								":username"
+							],
+							"variable": [
+								{
+									"key": "username",
+									"value": "simtape"
+								}
+							]
+						},
+						"description": "*   Il parametro che viene passato nell'url serve per trovare l'utente loggato e per verificare il suo ruolo; se è un ADMIN può eliminare un utente se è un WORKER non può eliminarlo;\n    \n\n*   Il parametro username passato nel body di richiesta serve per trovare l'utente da eliminare;\n*   Un utente non può eliminare se stesso, anche se è ADMIN;"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Statistics",
+			"item": [
+				{
+					"name": "Get waste per quantity",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/statistics/waste_per_quantity",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"statistics",
+								"waste_per_quantity"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get quantity per supplier",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/statistics/quantity_per_supplier",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"statistics",
+								"quantity_per_supplier"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get quantity per typology",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/statistics/quantity_per_typology",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"statistics",
+								"quantity_per_typology"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InNpbXRhcGUiLCJpYXQiOjE2NTUwNjYwMTIsImV4cCI6MTY1NTEwOTIxMn0.dR8KABUSOCfirFIUnYksyxmdpYZ7xtuiudSryLTwCKo",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "https://enolo-backend.herokuapp.com",
+			"type": "string"
+		},
+		{
+			"key": "local_base_url",
+			"value": "http://localhost:3000",
+			"type": "string"
+		}
+	]
+}
