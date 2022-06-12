@@ -176,6 +176,7 @@ exports.deleteWineConferment = [
 }];
 
 /** PATCH processes */
+// UPDATE wine pressing process
 exports.updateWinePressingProcess = [
     async function winePressingProcess (req,res) {
         try{
@@ -202,6 +203,7 @@ exports.updateWinePressingProcess = [
     }
 ];
 
+// UPDATE destemming process
 exports.updateDestemmingProcess = [
     async function destemmingProcess (req,res) {
         try{
@@ -229,6 +231,7 @@ exports.updateDestemmingProcess = [
     }
 ];
 
+// UPDATE wine making process
 exports.updateWinemakingProcess = [
     async function winemakingProcess (req,res) {
 
@@ -255,6 +258,7 @@ exports.updateWinemakingProcess = [
     }
 ];
 
+// UPDATE racking process
 exports.updateRackingProcess = [
     async function rackingProcess (req,res) {
         try{
@@ -281,6 +285,7 @@ exports.updateRackingProcess = [
     }
 ];
 
+// UPDATE refinement process
 exports.updateRefinementProcess = [
     async function refinementProcess (req,res) {
         try{
@@ -307,6 +312,7 @@ exports.updateRefinementProcess = [
     }
 ];
 
+// UPDATE bottling process
 exports.updateBottlingProcess = [
     async function updateBottlingProcess (req,res) {
         try{

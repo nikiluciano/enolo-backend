@@ -23,6 +23,7 @@ const dbUrl = process.env.DB_URL
 app.use(bodyParser.json());
 app.use(cors());
 
+// Use routes as middlewares
 app.use(login);
 app.use(signUp);
 app.use("/suppliers", supplierRoute);
