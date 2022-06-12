@@ -26,7 +26,7 @@ app.use(cors());
 app.use(login);
 app.use(signUp);
 app.use("/suppliers", supplierRoute);
-app.use("/wine_conferment", wineConfermentRoute);
+app.use(wineConfermentRoute);
 app.use("/statistics", statisticsRoute);
 app.use("/users", userRoute);
 app.use("/warehouse", warehouseRoute);
