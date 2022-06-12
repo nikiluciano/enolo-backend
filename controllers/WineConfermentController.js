@@ -2,19 +2,16 @@ const wineConfermentModel = require("../models/WineConferment");
 const warehouseModel = require("../models/Warehouse");
 const url = require('url');
 
-//Assign value to models fields
+// Assign value to models fields
 async function initNewConferment(req, res) {
     const wineConferment = new wineConfermentModel()
 
     try {
-        wineConferment.country = req.body.country
-        wineConferment.supplier = req.body.supplier
-        wineConferment.description = req.body.description
-        wineConferment.typology = req.body.typology
-        wineConferment.origin = req.body.origin
-        wineConferment._idworker = req.body._idworker
-        wineConferment.date = req.body.date
-        wineConferment.quantity = req.body.quantity
+        await init(wineConferment, req.body);
+
+        /** every process is NULL by default. So we need to check if every process is
+         * passed in body req by client: in this case we need to update conferment STATUS and
+         * current_process (this is important to know the last process completed) */
 
         if(req.body.wine_pressing_process == null){
             wineConferment.status = "DELIVERED"
@@ -54,6 +51,17 @@ async function initNewConferment(req, res) {
     } catch (e) {
         res.status(500).json({msg: "Errore del server"});
     }
+}
+
+async function init(conferment, req){
+    conferment.country = req.country
+    conferment.supplier = req.supplier
+    conferment.description = req.description
+    conferment.typology = req.typology
+    conferment.origin = req.origin
+    conferment._idworker = req._idworker
+    conferment.date = req.date
+    conferment.quantity = req.quantity
 }
 
 async function checkWarehouseQuantitiesAvailability(available, request) {

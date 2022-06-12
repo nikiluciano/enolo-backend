@@ -5,7 +5,6 @@ const config = process.env;
 
 const verifyToken = async (req, res, next) => {
     let token = req.body.token || req.query.token || req.headers["x-access-token"] || req.headers["authorization"];
-    console.log(token);
 
     if(token !== undefined){
         token = token.replace("Bearer ", "");
